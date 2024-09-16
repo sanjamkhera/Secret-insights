@@ -5,7 +5,7 @@ import { ZodiacSign, DailyHoroscope as DailyHoroscopeType } from '@/types';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Star, Sparkles, Heart, Briefcase, Brain, Eclipse, MoonStar, SunMoon, Zap, Scale, Lightbulb } from 'lucide-react';
+import { Sun, Moon, Star, Sparkles, Heart, Eclipse, SunMoon, Zap } from 'lucide-react';
 
 interface DailyHoroscopeProps {
   onSignSelect: (sign: ZodiacSign) => void;
