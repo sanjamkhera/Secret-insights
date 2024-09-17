@@ -60,8 +60,8 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
     <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 w-[350px] mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform">
       <CardHeader className="pb-2 bg-gradient-to-b from-purple-950 to-transparent">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-2 font-cursive leading-relaxed text-white">Cosmic Blueprint</h1>
-          <p className="text-xl font-fancy leading-relaxed text-white">Unveil Your Celestial DNA</p>
+          <h1 className="text-4xl font-bold mb-2 font-cursive leading-relaxed text-white">Cosmic Blueprint</h1>
+          <p className="text-2xl font-fancy leading-relaxed text-white">Unveil Your Celestial DNA</p>
           <div className="flex justify-center space-x-4 mt-4">
             <Sun className="text-yellow-300 animate-spin-slow" size={24} />
             <Moon className="text-blue-300 animate-pulse" size={24} />
@@ -72,44 +72,27 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
       </CardHeader>
 
       <CardContent className="px-6">
-        <div className="w-full max-w-[350px] mx-auto"> {/* Add this wrapper div */}
-          <Input
-            type="date"
-            value={birthDate}
-            onChange={handleDateChange}
-            className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm"
-            placeholder="Birth Date"
-          />
-          <Input
-            type="time"
-            value={birthTime}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthTime(e.target.value)}
-            className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm"
-            placeholder="Birth Time"
-          />
-          <Input
-            type="text"
-            value={birthLocation}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthLocation(e.target.value)}
-            className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm"
-            placeholder="Birth Location"
-          />
-
-          <Button
-            onClick={generateChart}
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl mt-4 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm"
-            disabled={!birthDate || !birthTime || !birthLocation || isLoading}
-          >
-            {isLoading ? (
-              <>
-                <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-                Aligning the Cosmic Forces...
-              </>
-            ) : (
-              'Generate My Natal Chart'
-            )}
-          </Button>
-        </div>
+        <Input
+          type="date"
+          value={birthDate}
+          onChange={handleDateChange}
+          className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
+          placeholder="Birth Date"
+        />
+        <Input
+          type="time"
+          value={birthTime}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthTime(e.target.value)}
+          className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
+          placeholder="Birth Time"
+        />
+        <Input
+          type="text"
+          value={birthLocation}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthLocation(e.target.value)}
+          className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
+          placeholder="Birth Location"
+        />
 
         {chartData && (
           <div className="space-y-4 mt-6">

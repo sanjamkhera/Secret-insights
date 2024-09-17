@@ -90,8 +90,8 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
     <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 w-[350px] mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mb-8">
       <CardHeader className="pb-2 bg-gradient-to-b from-indigo-950 to-transparent">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-2 font-cursive leading-relaxed text-white">Celestial Insights</h1>
-          <p className="text-xl font-fancy leading-relaxed text-white">Unlock the wisdom of the stars</p>
+          <h1 className="text-4xl font-bold mb-2 font-cursive leading-relaxed text-white">Celestial Insights</h1>
+          <p className="text-2xl font-fancy leading-relaxed text-white">Unlock the wisdom of the stars</p>
           <div className="flex justify-center space-x-4 mt-4">
             <Sun className="text-yellow-300 animate-spin-slow" size={24} />
             <Moon className="text-blue-300 animate-pulse" size={24} />
