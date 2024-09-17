@@ -72,27 +72,44 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
       </CardHeader>
 
       <CardContent className="px-6">
-        <Input
-          type="date"
-          value={birthDate}
-          onChange={handleDateChange}
-          className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
-          placeholder="Birth Date"
-        />
-        <Input
-          type="time"
-          value={birthTime}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthTime(e.target.value)}
-          className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
-          placeholder="Birth Time"
-        />
-        <Input
-          type="text"
-          value={birthLocation}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthLocation(e.target.value)}
-          className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
-          placeholder="Birth Location"
-        />
+        <div className="w-full max-w-[350px] mx-auto"> {/* Add this wrapper div */}
+          <Input
+            type="date"
+            value={birthDate}
+            onChange={handleDateChange}
+            className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
+            placeholder="Birth Date"
+          />
+          <Input
+            type="time"
+            value={birthTime}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthTime(e.target.value)}
+            className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
+            placeholder="Birth Time"
+          />
+          <Input
+            type="text"
+            value={birthLocation}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthLocation(e.target.value)}
+            className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
+            placeholder="Birth Location"
+          />
+
+          <Button
+            onClick={generateChart}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl mt-4 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm"
+            disabled={!birthDate || !birthTime || !birthLocation || isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Sparkles className="mr-2 h-4 w-4 animate-spin" />
+                Aligning the Cosmic Forces...
+              </>
+            ) : (
+              'Generate My Natal Chart'
+            )}
+          </Button>
+        </div>
 
         {chartData && (
           <div className="space-y-4 mt-6">
