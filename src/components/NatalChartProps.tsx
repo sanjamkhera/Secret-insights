@@ -10,8 +10,8 @@ interface NatalChartProps {
 }
 
 const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
-  const [birthDate, setBirthDate] = useState('');
-  const [birthTime, setBirthTime] = useState('');
+  const [birthDate, setBirthDate] = useState('1970-01-01'); 
+  const [birthTime, setBirthTime] = useState('00:00'); 
   const [birthLocation, setBirthLocation] = useState('');
   const [chartData, setChartData] = useState<PlanetaryPositions | null>(null);
   const [isLoading, setIsLoading] = useState(false);
