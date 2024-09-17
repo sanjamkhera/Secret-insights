@@ -87,22 +87,21 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
   };
 
   return (
-    <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform">
+    <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 w-[350px] mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mb-8">
       <CardHeader className="pb-2 bg-gradient-to-b from-indigo-950 to-transparent">
-        {/* Header section with title and subtitle */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-2 font-cursive leading-relaxed text-white">Celestial Insights</h1>
+          <h1 className="text-3xl font-bold mb-2 font-cursive leading-relaxed text-white">Celestial Insights</h1>
           <p className="text-xl font-fancy leading-relaxed text-white">Unlock the wisdom of the stars</p>
           <div className="flex justify-center space-x-4 mt-4">
-            <Sun className="text-yellow-300 animate-spin-slow" size={28} />
-            <Moon className="text-blue-300 animate-pulse" size={28} />
-            <Star className="text-cyan-300 animate-twinkle" size={28} />
-            <Eclipse className="text-orange-300 animate-pulse" size={28} />
+            <Sun className="text-yellow-300 animate-spin-slow" size={24} />
+            <Moon className="text-blue-300 animate-pulse" size={24} />
+            <Star className="text-cyan-300 animate-twinkle" size={24} />
+            <Eclipse className="text-orange-300 animate-pulse" size={24} />
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="px-6">
+      <CardContent className="px-4">
         <Select onValueChange={(value) => setSelectedSign(value as ZodiacSign)}>
           <SelectTrigger className="w-full bg-blue-900 border-blue-700 text-white rounded-xl my-4">
             <SelectValue placeholder="Select Your Zodiac Sign" />
@@ -171,10 +170,11 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
       </CardContent>
 
       <CardFooter className="justify-center pb-4">
-        <p className="text-sm sm:text-lg font-cursive leading-relaxed text-white text-center">
+        <p className="text-base font-cursive leading-relaxed text-white text-center">
           Follow your path and reach for the stars
         </p>
       </CardFooter>
+
     </Card>
   );
 };
