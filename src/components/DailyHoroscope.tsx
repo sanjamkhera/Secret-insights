@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ZodiacSign, DailyHoroscope as DailyHoroscopeType } from '@/types';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Star, Sparkles, Heart, Eclipse, SunMoon, Zap, X } from 'lucide-react';
+import { Sparkles, Heart, Zap, X } from 'lucide-react';
 
 interface DailyHoroscopeProps {
   onSignSelect: (sign: ZodiacSign) => void;
