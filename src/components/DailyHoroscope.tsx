@@ -101,7 +101,7 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
   
   return (
     <div className="relative w-full max-w-md mx-auto">
-      <Card className="bg-black bg-opacity-20 text-white shadow-lg font-sans overflow-hidden transition-all duration-300 ease-in-out transform border-2 rounded-xl border-gray-600">
+      <Card className="bg-transparent border-0 text-white shadow-lg font-sans overflow-hidden transition-all duration-300 ease-in-out transform">
         <CardHeader className="pb-2">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-3 font-cursive leading-relaxed text-gray-200">Daily Horoscope</h1>
@@ -113,7 +113,7 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
             {zodiacSigns.map(({ sign, emoji, dateRange }) => (
               <Button
                 key={sign}
-                className="bg-gradient-to-br from-indigo-950 to-purple-950 border-blue-800 text-white rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 p-4 h-auto w-[80%]"
+                className="bg-gradient-to-br from-indigo-950 to-purple-950 border-blue-800 text-white rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 p-4 h-auto w-[60%]"
                 onClick={() => getHoroscope(sign)}
               >
                 <div className="flex items-center justify-center w-full">
