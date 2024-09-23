@@ -8,7 +8,7 @@ import DailyHoroscope from '@/components/DailyHoroscope';
 import { ZodiacSign } from '@/types';
 // Import the NatalChart component from the components folder
 import NatalChartProps from '@/components/NatalChartProps';
-import { Sun, Moon, Star, Sparkles, Heart, Eclipse, SunMoon, Zap } from 'lucide-react';
+import { Sun, Moon, Star, Sparkles, Eclipse, SunMoon, Zap } from 'lucide-react';
 
 // Define the main Home component as the default export
 export default function Home() {

@@ -10,16 +10,16 @@ export function calculateAscendant(
   time: string,
   latitude: number,
   longitude: number,
-  apiData: any
+  apiData: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ): ZodiacSign {
   const eastHorizon = findEastHorizon(apiData);
   return determineAscendantSign(eastHorizon);
 }
 
-function findEastHorizon(apiData: any): { constellation: string, azimuth: number } {
+function findEastHorizon(apiData: any): { constellation: string, azimuth: number } { // eslint-disable-line @typescript-eslint/no-explicit-any
   let closestToEast = { constellation: '', azimuth: 0, difference: 360 };
 
-  apiData.table.rows.forEach((row: any) => {
+  apiData.table.rows.forEach((row: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const cell = row.cells[0];
     const azimuth = parseFloat(cell.position.horizontal.azimuth.degrees);
     const difference = Math.abs(azimuth - 90);
@@ -54,8 +54,8 @@ function determineAscendantSign(eastHorizon: { constellation: string, azimuth: n
   return constellation as ZodiacSign;
 }
 
-export function getSunSign(apiData: any): ZodiacSign {
-  const sunData = apiData.table.rows.find((row: any) => row.entry.id === 'sun');
+export function getSunSign(apiData: any): ZodiacSign { // eslint-disable-line @typescript-eslint/no-explicit-any
+  const sunData = apiData.table.rows.find((row: any) => row.entry.id === 'sun'); // eslint-disable-line @typescript-eslint/no-explicit-any
   const rightAscension = parseFloat(sunData.cells[0].position.equatorial.rightAscension.hours);
   
   let eclipticLongitude = (rightAscension * 15);
@@ -75,8 +75,8 @@ function determineZodiacSign(eclipticLongitude: number): ZodiacSign {
   return signs[signIndex];
 }
 
-export function getMoonSign(apiData: any): ZodiacSign {
-  const moonData = apiData.table.rows.find((row: any) => row.entry.id === 'moon');
+export function getMoonSign(apiData: any): ZodiacSign { // eslint-disable-line @typescript-eslint/no-explicit-any
+  const moonData = apiData.table.rows.find((row: any) => row.entry.id === 'moon'); // eslint-disable-line @typescript-eslint/no-explicit-any
   const rightAscension = parseFloat(moonData.cells[0].position.equatorial.rightAscension.hours);
   
   let eclipticLongitude = (rightAscension * 15);
