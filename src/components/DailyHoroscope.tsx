@@ -3,27 +3,35 @@
 import React, { useState } from 'react';
 import { ZodiacSign, DailyHoroscope as DailyHoroscopeType } from '@/types';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Star, Sparkles, Heart, Eclipse, SunMoon, Zap } from 'lucide-react';
+import { Sun, Moon, Star, Sparkles, Heart, Eclipse, SunMoon, Zap, X } from 'lucide-react';
 
 interface DailyHoroscopeProps {
   onSignSelect: (sign: ZodiacSign) => void;
 }
 
 const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
-  const [selectedSign, setSelectedSign] = useState<ZodiacSign | ''>('');
+  const [selectedSign, setSelectedSign] = useState<ZodiacSign | null>(null);
   const [horoscope, setHoroscope] = useState<DailyHoroscopeType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const zodiacSigns: ZodiacSign[] = [
-    'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-    'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+  const zodiacSigns: { sign: ZodiacSign; emoji: string; dateRange: string }[] = [
+    { sign: 'Aries', emoji: '♈', dateRange: 'Mar 21 - Apr 19' },
+    { sign: 'Taurus', emoji: '♉', dateRange: 'Apr 20 - May 20' },
+    { sign: 'Gemini', emoji: '♊', dateRange: 'May 21 - Jun 20' },
+    { sign: 'Cancer', emoji: '♋', dateRange: 'Jun 21 - Jul 22' },
+    { sign: 'Leo', emoji: '♌', dateRange: 'Jul 23 - Aug 22' },
+    { sign: 'Virgo', emoji: '♍', dateRange: 'Aug 23 - Sep 22' },
+    { sign: 'Libra', emoji: '♎', dateRange: 'Sep 23 - Oct 22' },
+    { sign: 'Scorpio', emoji: '♏', dateRange: 'Oct 23 - Nov 21' },
+    { sign: 'Sagittarius', emoji: '♐', dateRange: 'Nov 22 - Dec 21' },
+    { sign: 'Capricorn', emoji: '♑', dateRange: 'Dec 22 - Jan 19' },
+    { sign: 'Aquarius', emoji: '♒', dateRange: 'Jan 20 - Feb 18' },
+    { sign: 'Pisces', emoji: '♓', dateRange: 'Feb 19 - Mar 20' }
   ];
 
-  const getHoroscope = async () => {
-    if (!selectedSign) return;
-
+  const getHoroscope = async (sign: ZodiacSign) => {
+    setSelectedSign(sign);
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -44,7 +52,7 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
 
     const selectedTemplate = horoscopeTemplates[Math.floor(Math.random() * horoscopeTemplates.length)];
     const horoscopeContent = selectedTemplate
-      .replace('{sign}', selectedSign)
+      .replace('{sign}', sign)
       .replace('{activity}', ['creativity', 'introspection', 'socializing', 'learning'][Math.floor(Math.random() * 4)])
       .replace('{positive_outcome}', ['success', 'personal growth', 'new opportunities', 'inner peace'][Math.floor(Math.random() * 4)])
       .replace('{negative_event}', ['stress', 'misunderstandings', 'distractions', 'self-doubt'][Math.floor(Math.random() * 4)])
@@ -76,107 +84,103 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
       .replace('{conflict_source}', ['a coworker', 'a friend', 'a family member', 'an inner conflict'][Math.floor(Math.random() * 4)])
       .replace('{conflict_strategy}', ['calm diplomacy', 'honest communication', 'empathy and understanding', 'self-reflection'][Math.floor(Math.random() * 4)]);
 
-    setHoroscope({
-      content: horoscopeContent,
-      mood: ['Inspired', 'Contemplative', 'Energized', 'Serene', 'Determined', 'Optimistic'][Math.floor(Math.random() * 6)],
-      luckyNumber: Math.floor(Math.random() * 100) + 1,
-      compatibility: zodiacSigns[Math.floor(Math.random() * zodiacSigns.length)],
-    });
-    onSignSelect(selectedSign);
-    setIsLoading(false);
-  };
-
-  return (
-    <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 w-[350px] mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mb-8">
-      <CardHeader className="pb-2 bg-gradient-to-b from-indigo-950 to-transparent">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-2 font-cursive leading-relaxed text-white">Celestial Insights</h1>
-          <p className="text-2xl font-fancy leading-relaxed text-white">Unlock the wisdom of the stars</p>
-          <div className="flex justify-center space-x-4 mt-4">
-            <Sun className="text-yellow-300 animate-spin-slow" size={24} />
-            <Moon className="text-blue-300 animate-pulse" size={24} />
-            <Star className="text-cyan-300 animate-twinkle" size={24} />
-            <Eclipse className="text-orange-300 animate-pulse" size={24} />
+      setHoroscope({
+        content: horoscopeContent,
+        mood: ['Inspired', 'Contemplative', 'Energized', 'Serene', 'Determined', 'Optimistic'][Math.floor(Math.random() * 6)],
+        luckyNumber: Math.floor(Math.random() * 100) + 1,
+        compatibility: zodiacSigns[Math.floor(Math.random() * zodiacSigns.length)].sign,
+      });
+      onSignSelect(sign);
+      setIsLoading(false);
+    };
+  
+    const closeHoroscope = () => {
+      setSelectedSign(null);
+      setHoroscope(null);
+    };
+  
+    return (
+      <Card className="bg-black bg-opacity-40 text-white shadow-lg font-sans w-full max-w-md mx-auto overflow-hidden transition-all duration-300 ease-in-out transform border-2 rounded-xl border-gray-600">
+        <CardHeader className="pb-2">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold mb-3 font-cursive leading-relaxed text-gray-200">Daily Horoscope</h1>
           </div>
-        </div>
-      </CardHeader>
-
-      <CardContent className="px-4">
-        <Select onValueChange={(value) => setSelectedSign(value as ZodiacSign)}>
-          <SelectTrigger className="w-full bg-blue-900 border-blue-700 text-white rounded-xl my-4">
-            <SelectValue placeholder="Select Your Zodiac Sign" />
-          </SelectTrigger>
-          <SelectContent className="bg-blue-900 text-white rounded-xl">
-            {zodiacSigns.map((sign) => (
-              <SelectItem key={sign} value={sign} className="hover:bg-blue-800">{sign}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Button
-          onClick={getHoroscope}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105"
-          disabled={!selectedSign || isLoading}
-        >
-          {isLoading ? (
-            <>
-              <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-              Consulting the Celestial Spheres...
-            </>
+        </CardHeader>
+  
+        <CardContent className="px-4">
+          {!selectedSign ? (
+            <div className="grid grid-cols-2 gap-4">
+              {zodiacSigns.map(({ sign, emoji, dateRange }) => (
+                <Button
+                  key={sign}
+                  className="bg-gradient-to-br from-indigo-950 to-purple-950 border-blue-800 text-white rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105 p-4 h-auto"
+                  onClick={() => getHoroscope(sign)}
+                >
+                  <div className="flex flex-col items-center">
+                    <span className="text-4xl mb-2">{emoji}</span>
+                    <span className="text-lg mb-1">{sign}</span>
+                    <span className="text-xs text-gray-300">{dateRange}</span>
+                  </div>
+                </Button>
+              ))}
+            </div>
           ) : (
-            'Reveal My Celestial Horoscope'
+            <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn relative">
+              <Button
+                className="absolute top-2 right-2 bg-transparent hover:bg-blue-800 rounded-full p-1"
+                onClick={closeHoroscope}
+              >
+                <X size={24} className='text-white' />
+              </Button>
+              <CardContent className="p-6">
+                <h2 className="text-2xl font-bold mb-1 text-center">
+                  {selectedSign} {zodiacSigns.find(z => z.sign === selectedSign)?.emoji}
+                </h2>
+                <p className="text-sm text-center text-gray-300 mb-4">
+                  {zodiacSigns.find(z => z.sign === selectedSign)?.dateRange}
+                </p>
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <Sparkles className="mr-2 h-8 w-8 animate-spin" />
+                    <span>Consulting the Celestial Spheres...</span>
+                  </div>
+                ) : horoscope ? (
+                  <div className="space-y-4">
+                    <p className="text-lg text-justify">{horoscope.content}</p>
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      <Card className="bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 border-purple-800 text-white text-center rounded-xl">
+                        <CardContent className="p-3">
+                          <Zap className="inline-block mr-2 text-purple-300" size={20} />
+                          <p>Cosmic Mood: {horoscope.mood}</p>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-gradient-to-br from-indigo-950 via-blue-950 to-cyan-950 border-indigo-800 text-white text-center rounded-xl">
+                        <CardContent className="p-3">
+                          <Sparkles className="inline-block mr-2 text-yellow-300" size={20} />
+                          <p>Cosmic Number: {horoscope.luckyNumber}</p>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-gradient-to-br from-pink-950 via-purple-950 to-indigo-950 border-pink-800 text-white text-center rounded-xl col-span-2">
+                        <CardContent className="p-3">
+                          <Heart className="inline-block mr-2 text-red-500" size={20} />
+                          <p>Compatible with: {horoscope.compatibility}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                ) : null}
+              </CardContent>
+            </Card>
           )}
-        </Button>
-
-        {horoscope && (
-          <div className="space-y-4 mt-4">
-            <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
-              <CardHeader className="pb-2 flex items-center">
-                <SunMoon className="mr-2 text-yellow-300" size={20} />
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg text-justify">{horoscope.content}</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 border-purple-800 text-white text-center rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
-              <CardHeader className="pb-2 flex items-center">
-                <Zap className="mr-2 text-purple-300" size={20} />
-              </CardHeader>
-              <CardContent>
-                <p>Cosmic Mood: {horoscope.mood}</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-indigo-950 via-blue-950 to-cyan-950 border-indigo-800 text-white text-center rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
-              <CardHeader className="pb-2 flex items-center">
-                <Sparkles className="mr-2 text-yellow-300" size={20} />
-              </CardHeader>
-              <CardContent>
-                <p>Cosmic Number: {horoscope.luckyNumber}</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-pink-950 via-purple-950 to-indigo-950 border-pink-800 text-white text-center rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
-              <CardHeader className="pb-2 flex items-center">
-                <Heart className="mr-2 text-red-500" size={20} />
-              </CardHeader>
-              <CardContent>
-                <p>Compatible with: {horoscope.compatibility}</p>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </CardContent>
-
-      <CardFooter className="justify-center pb-4">
-        <p className="text-base font-cursive leading-relaxed text-white text-center">
-          Follow your path and reach for the stars
-        </p>
-      </CardFooter>
-
-    </Card>
-  );
-};
-
-export default DailyHoroscope;
+        </CardContent>
+  
+        <CardFooter className="justify-center pb-4">
+          <p className="text-lg font-cursive leading-relaxed text-gray-300 text-center">
+            Follow your path and reach for the stars
+          </p>
+        </CardFooter>
+      </Card>
+    );
+  };
+  
+  export default DailyHoroscope;

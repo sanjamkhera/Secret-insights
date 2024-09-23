@@ -28,9 +28,9 @@ export default function RootLayout({
         {/* Render the dynamically imported StarryGalaxyBackground */}
         <StarryGalaxyBackground />
         {/* Main content wrapper with z-index to appear above the background */}
-        <div className="relative z-10 min-h-screen p-8">
+        <div className="relative z-10 min-h-screen pt-0 bg-transparent">
           {/* Main content area where child components will be rendered */}
-          <main className="max-w-4xl mx-auto">
+          <main className="max-w-4xl mx-auto border-2 border-gray-400 rounded-xl">
             {children}
           </main>
         </div>

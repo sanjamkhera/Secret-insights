@@ -1,0 +1,34 @@
+# Algorithm for Generating Natal Charts
+
+1. **Input Data**
+   - Birth date and time
+   - Birth location (latitude and longitude)
+   - Celestial data for the birth date/time (similar to the provided JSON)
+
+2. **Calculate Planetary Positions**
+   - For each planet (Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto):
+     - Extract Right Ascension (RA) and Declination from celestial data
+     - Convert RA and Declination to ecliptic longitude (zodiac position)
+     - Determine zodiac sign and degree based on ecliptic longitude
+
+3. **Determine Ascendant and Houses**
+   - Calculate Local Sidereal Time (LST) for birth time and location
+   - Use LST and birth location to calculate Ascendant
+   - Calculate cusps for all 12 houses
+
+4. **Identify Aspects**
+   - Compare angular distances between planets
+   - Identify major aspects (conjunction, opposition, trine, square, sextile)
+
+5. **Generate Chart**
+   - Plot zodiac wheel
+   - Place planets in their respective signs and houses
+   - Draw aspect lines
+
+6. **Interpret Results**
+   - Identify Sun sign, Moon sign, Ascendant sign
+   - Note any significant placements (e.g., stelliums, planets in domicile/exaltation)
+   - List major aspects and their interpretations\
+
+
+   
