@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
@@ -5,6 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Sparkles } from 'lucide-react';
 import { calculateAscendant, getSunSign, getMoonSign } from '@/utils/astrology';
+import ZodiacWheel from './ZodiacWheel';
+import { CelestialData } from '@/types/celestialData';
 
 interface NatalChartProps {
   onChartGenerate: (birthInfo: { date: string; time: string; location: string }) => void;
@@ -16,68 +19,55 @@ interface SignInfo {
   ascendant: string;
 }
 
-const zodiacSigns = [
-  'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
-];
-
-const zodiacSymbols: { [key: string]: string } = {
-  'Aries': '♈', 'Taurus': '♉', 'Gemini': '♊', 'Cancer': '♋',
-  'Leo': '♌', 'Virgo': '♍', 'Libra': '♎', 'Scorpio': '♏',
-  'Sagittarius': '♐', 'Capricorn': '♑', 'Aquarius': '♒', 'Pisces': '♓'
-};
-
 const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
-  const [birthDate, setBirthDate] = useState('');
-  const [birthTime, setBirthTime] = useState('');
-  const [birthCity, setBirthCity] = useState('');
+  const [birthInfo, setBirthInfo] = useState({ date: '', time: '', location: '' });
+  const [celestialData, setCelestialData] = useState<CelestialData | null>(null);
   const [signInfo, setSignInfo] = useState<SignInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputDate = new Date(e.target.value);
-    const currentDate = new Date();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBirthInfo(prev => ({ ...prev, [name]: value }));
 
-    if (!isNaN(inputDate.getTime()) && inputDate <= currentDate) {
-      setBirthDate(e.target.value);
-    } else {
-      setBirthDate('');
-      setError('Please enter a valid date not in the future.');
+    if (name === 'date') {
+      const inputDate = new Date(value);
+      const currentDate = new Date();
+
+      if (isNaN(inputDate.getTime()) || inputDate > currentDate) {
+        setError('Please enter a valid date not in the future.');
+      } else {
+        setError(null);
+      }
     }
   };
 
   const generateChart = async () => {
-    if (!birthDate || !birthTime || !birthCity) return;
+    if (!birthInfo.date || !birthInfo.time || !birthInfo.location) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get('/api/celestial-data', {
-        params: {
-          date: birthDate,
-          time: birthTime,
-          city: birthCity
-        }
+      const response = await axios.get<{ data: CelestialData }>('/api/celestial-data', {
+        params: birthInfo
       });
 
       const data = response.data.data;
+      setCelestialData(data);
+
       const sunSign = getSunSign(data);
       const moonSign = getMoonSign(data);
-
-      const latitude = data.observer.location.latitude;
-      const longitude = data.observer.location.longitude;
       const ascendant = calculateAscendant(
-        new Date(birthDate),
-        birthTime,
-        latitude,
-        longitude,
+        new Date(birthInfo.date),
+        birthInfo.time,
+        data.observer.location.latitude,
+        data.observer.location.longitude,
         data
       );
 
       setSignInfo({ sunSign, moonSign, ascendant });
-      onChartGenerate({ date: birthDate, time: birthTime, location: birthCity });
+      onChartGenerate(birthInfo);
     } catch (error) {
       console.error('Error generating chart:', error);
       if (axios.isAxiosError(error) && error.response) {
@@ -90,58 +80,6 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
     }
   };
 
-  const renderZodiacWheel = () => {
-    const size = 400; // Increased size
-    const center = size / 2;
-    const radius = size / 2 - 20;
-
-    return (
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ padding: '20px 0' }}>
-        <defs>
-          <radialGradient id="bg-transparent" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" stopColor="#000033" />
-            <stop offset="100%" stopColor="#000011" />
-          </radialGradient>
-        </defs>
-
-        <circle cx={center} cy={center} r={radius + 20} fill="url(#bg-gradient)" />
-        <circle cx={center} cy={center} r={radius} fill="none" stroke="white" strokeWidth="2" />
-
-        {zodiacSigns.map((sign, index) => {
-          const angle = (index * 30 - 90) * (Math.PI / 180);
-          const x = center + radius * Math.cos(angle);
-          const y = center + radius * Math.sin(angle);
-
-          return (
-            <g key={sign}>
-              <line
-                x1={center}
-                y1={center}
-                x2={x}
-                y2={y}
-                stroke="white"
-                strokeWidth="1"
-              />
-              <text
-                x={center + (radius + 15) * Math.cos(angle)}
-                y={center + (radius + 15) * Math.sin(angle)}
-                fill="white"
-                fontSize="16"
-                textAnchor="middle"
-                dominantBaseline="middle"
-              >
-                {zodiacSymbols[sign]}
-              </text>
-            </g>
-          );
-        })}
-
-        <circle cx={center} cy={center} r="50" fill="purple" stroke="white" />
-        <text x={center} y={center} fill="white" fontSize="32" textAnchor="middle" dominantBaseline="middle">☽</text>
-      </svg>
-    );
-  };
-
   const renderSignInfo = () => {
     if (!signInfo) return null;
 
@@ -151,15 +89,15 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
         <div className="grid grid-cols-3 gap-4">
           <div>
             <p className="font-semibold">Sun Sign</p>
-            <p>{zodiacSymbols[signInfo.sunSign]} {signInfo.sunSign}</p>
+            <p>{signInfo.sunSign}</p>
           </div>
           <div>
             <p className="font-semibold">Moon Sign</p>
-            <p>{zodiacSymbols[signInfo.moonSign]} {signInfo.moonSign}</p>
+            <p>{signInfo.moonSign}</p>
           </div>
           <div>
             <p className="font-semibold">Ascendant</p>
-            <p>{zodiacSymbols[signInfo.ascendant]} {signInfo.ascendant}</p>
+            <p>{signInfo.ascendant}</p>
           </div>
         </div>
       </div>
@@ -178,30 +116,33 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
         <div className="w-full max-w-[350px] mx-auto">
           <Input
             type="date"
-            value={birthDate}
-            onChange={handleDateChange}
+            name="date"
+            value={birthInfo.date}
+            onChange={handleInputChange}
             className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
             placeholder="Birth Date"
           />
           <Input
             type="time"
-            value={birthTime}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthTime(e.target.value)}
+            name="time"
+            value={birthInfo.time}
+            onChange={handleInputChange}
             className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
             placeholder="Birth Time"
           />
           <Input
             type="text"
-            value={birthCity}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBirthCity(e.target.value)}
+            name="location"  // Changed from "city" to "location"
+            value={birthInfo.location}
+            onChange={handleInputChange}
             className="w-full bg-purple-900 border-purple-700 text-white rounded-xl my-2 text-sm placeholder-gray-400"
-            placeholder="Birth City (e.g., New York, USA)"
+            placeholder="Birth Location (e.g., New York, USA)"
           />
 
           <Button
             onClick={generateChart}
             className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl mt-4 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm"
-            disabled={!birthDate || !birthTime || !birthCity || isLoading}
+            disabled={!birthInfo.date || !birthInfo.time || !birthInfo.location || isLoading}
           >
             {isLoading ? (
               <>
@@ -220,9 +161,13 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
           </div>
         )}
 
-        <div className="mt-6 py-4 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           {renderSignInfo()}
-          {renderZodiacWheel()}
+          <ZodiacWheel
+            celestialData={celestialData}
+            birthDate={birthInfo.date}
+            birthTime={birthInfo.time}
+          />
         </div>
       </CardContent>
 

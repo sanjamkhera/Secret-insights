@@ -7,7 +7,7 @@ import DailyHoroscope from '@/components/DailyHoroscope';
 // Import the ZodiacSign type from the types file
 import { ZodiacSign } from '@/types';
 // Import the NatalChart component from the components folder
-import NatalChartProps from '@/components/NatalChartProps';
+import NatalChartProps from '@/components/NatalChart';
 import { Sun, Moon, Star, Sparkles, Eclipse, SunMoon, Zap } from 'lucide-react';
 
 // Define the main Home component as the default export
@@ -29,7 +29,7 @@ export default function Home() {
   // Render the component
   return (
     <>
-      <div className='text-center pt-4 pb-2 '>
+      <div className='text-center pt-4 pb-2 mb-2'>
         <h1 className="text-4xl font-bold font-cursive leading-relaxed text-gray-200 pt-2">Celestial Insights</h1>
         <p className="text-2xl font-fancy leading-relaxed text-gray-400">Unlock the wisdom of the stars</p>
         <div className="flex justify-center space-x-4 mt-4">

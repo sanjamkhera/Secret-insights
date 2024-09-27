@@ -1,3 +1,4 @@
+import { CelestialData, CelestialBodyData } from '@/types/celestialData';
 import { ZodiacSign } from '../types';
 
 const zodiacSigns: ZodiacSign[] = [
@@ -10,16 +11,16 @@ export function calculateAscendant(
   time: string,
   latitude: number,
   longitude: number,
-  apiData: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  apiData: CelestialData
 ): ZodiacSign {
   const eastHorizon = findEastHorizon(apiData);
   return determineAscendantSign(eastHorizon);
 }
 
-function findEastHorizon(apiData: any): { constellation: string, azimuth: number } { // eslint-disable-line @typescript-eslint/no-explicit-any
+function findEastHorizon(apiData: CelestialData): { constellation: string, azimuth: number } {
   let closestToEast = { constellation: '', azimuth: 0, difference: 360 };
 
-  apiData.table.rows.forEach((row: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+  apiData.table.rows.forEach((row: CelestialBodyData) => {
     const cell = row.cells[0];
     const azimuth = parseFloat(cell.position.horizontal.azimuth.degrees);
     const difference = Math.abs(azimuth - 90);
@@ -54,8 +55,13 @@ function determineAscendantSign(eastHorizon: { constellation: string, azimuth: n
   return constellation as ZodiacSign;
 }
 
-export function getSunSign(apiData: any): ZodiacSign { // eslint-disable-line @typescript-eslint/no-explicit-any
-  const sunData = apiData.table.rows.find((row: any) => row.entry.id === 'sun'); // eslint-disable-line @typescript-eslint/no-explicit-any
+export function getSunSign(apiData: CelestialData): ZodiacSign {
+  const sunData = apiData.table.rows.find(row => row.entry.id === 'sun');
+  if (!sunData) {
+    console.error('Sun data not found in the API response');
+    return 'Aries'; // Default to Aries if sun data is not found
+  }
+  
   const rightAscension = parseFloat(sunData.cells[0].position.equatorial.rightAscension.hours);
   
   let eclipticLongitude = (rightAscension * 15);
@@ -67,16 +73,17 @@ export function getSunSign(apiData: any): ZodiacSign { // eslint-disable-line @t
 }
 
 function determineZodiacSign(eclipticLongitude: number): ZodiacSign {
-  const signs: ZodiacSign[] = [
-    'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-    'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
-  ];
   const signIndex = Math.floor(eclipticLongitude / 30);
-  return signs[signIndex];
+  return zodiacSigns[signIndex];
 }
 
-export function getMoonSign(apiData: any): ZodiacSign { // eslint-disable-line @typescript-eslint/no-explicit-any
-  const moonData = apiData.table.rows.find((row: any) => row.entry.id === 'moon'); // eslint-disable-line @typescript-eslint/no-explicit-any
+export function getMoonSign(apiData: CelestialData): ZodiacSign {
+  const moonData = apiData.table.rows.find(row => row.entry.id === 'moon');
+  if (!moonData) {
+    console.error('Moon data not found in the API response');
+    return 'Aries'; // Default to Aries if moon data is not found
+  }
+  
   const rightAscension = parseFloat(moonData.cells[0].position.equatorial.rightAscension.hours);
   
   let eclipticLongitude = (rightAscension * 15);

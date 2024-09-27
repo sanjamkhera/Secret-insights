@@ -20,7 +20,7 @@ export const metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode // Type annotation for the children prop
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
