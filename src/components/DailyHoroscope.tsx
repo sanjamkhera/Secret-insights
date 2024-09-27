@@ -200,7 +200,7 @@ import { ZodiacSign, DailyHoroscope as DailyHoroscopeType } from '@/types';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Star, Sparkles, Heart, Briefcase, Brain, Eclipse, MoonStar, SunMoon, Zap, Scale, Lightbulb } from 'lucide-react';
+import { Sparkles, Heart, Zap } from 'lucide-react';
 
 interface DailyHoroscopeProps {
   onSignSelect: (sign: ZodiacSign) => void;
@@ -336,15 +336,15 @@ const DailyHoroscope: React.FC<DailyHoroscopeProps> = ({ onSignSelect }) => {
         </Button>
 
         {horoscope && (
-          <div className="space-y-4 mt-4">
-            <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
-              <CardHeader className="pb-2 flex items-center">
-                <span className="mr-2 text-2xl">{getZodiacEmoji(selectedSign as ZodiacSign)}</span>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg text-justify">{horoscope.content}</p>
-              </CardContent>
-            </Card>
+        <div className="space-y-4 mt-4">
+          <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
+            <CardHeader className="pb-2 flex items-center">
+              <span className="mr-2 text-2xl">{getZodiacEmoji(selectedSign as ZodiacSign)}</span>
+            </CardHeader>
+            <CardContent>
+              <p className="text-lg text-justify">{horoscope.content}</p>
+            </CardContent>
+          </Card>
 
             <Card className="bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 border-purple-800 text-white text-center rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
               <CardHeader className="pb-2 flex items-center">

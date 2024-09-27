@@ -165,8 +165,6 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
           {renderSignInfo()}
           <ZodiacWheel
             celestialData={celestialData}
-            birthDate={birthInfo.date}
-            birthTime={birthInfo.time}
           />
         </div>
       </CardContent>

@@ -34,11 +34,9 @@ const constellations: { [key: string]: [number, number][] } = {
 // Props interface for the ZodiacWheel component
 interface ZodiacWheelProps {
   celestialData: CelestialData | null;
-  birthDate: string;
-  birthTime: string;
 }
 
-const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, birthTime }) => {
+const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
   // Define the dimensions and radii for the wheel
   const size = 360;
   const padding = 30;
@@ -82,13 +80,13 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
         <circle cx={center} cy={center} r={innerRadius} fill="none" stroke="white" strokeWidth="1" />
 
         {/* Draw the dividing lines for each zodiac sign */}
-        {zodiacSigns.map((_, index) => {
-          const angle = (index * 30 - 90) * (Math.PI / 180);
+        {zodiacSigns.map((_, i) => {
+          const angle = (i * 30 - 90) * (Math.PI / 180);
           const innerPoint = getCoordinates(angle, innerRadius);
           const outerPoint = getCoordinates(angle, outerRadius);
           return (
             <line
-              key={index}
+              key={i}
               x1={innerPoint.x}
               y1={innerPoint.y}
               x2={outerPoint.x}
@@ -100,17 +98,17 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
         })}
 
         {/* Draw the constellations for each zodiac sign */}
-        {zodiacSigns.map((sign, index) => {
-          const angle = (index * 30 - 75) * (Math.PI / 180);
+        {zodiacSigns.map((sign, i) => {
+          const angle = (i * 30 - 75) * (Math.PI / 180);
           const basePoint = getCoordinates(angle, constellationRadius);
           const pattern = constellations[sign];
           
           return (
             <g key={`constellation-${sign}`}>
               {/* Draw stars */}
-              {pattern.map((point, i) => (
+              {pattern.map((point, j) => (
                 <circle
-                  key={`star-${i}`}
+                  key={`star-${j}`}
                   cx={basePoint.x + point[0] - 15}
                   cy={basePoint.y + point[1] - 15}
                   r="1"
@@ -118,11 +116,11 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
                 />
               ))}
               {/* Connect stars with lines */}
-              {pattern.slice(1).map((point, i) => (
+              {pattern.slice(1).map((point, j) => (
                 <line
-                  key={`line-${i}`}
-                  x1={basePoint.x + pattern[i][0] - 15}
-                  y1={basePoint.y + pattern[i][1] - 15}
+                  key={`line-${j}`}
+                  x1={basePoint.x + pattern[j][0] - 15}
+                  y1={basePoint.y + pattern[j][1] - 15}
                   x2={basePoint.x + point[0] - 15}
                   y2={basePoint.y + point[1] - 15}
                   stroke="#8a2be2"
@@ -144,8 +142,8 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
         <text x={center - 38} y={center} fill="white" fontSize="12" textAnchor="end">IX</text>
 
         {/* Add zodiac sign names in a circular pattern */}
-        {zodiacSigns.map((sign, index) => {
-          const angle = (index * 30 - 90) * (Math.PI / 180);
+        {zodiacSigns.map((sign, i) => {
+          const angle = (i * 30 - 90) * (Math.PI / 180);
           const point = getCoordinates(angle, textRadius);
           return (
             <text
@@ -156,7 +154,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
               fontSize="12"
               textAnchor="middle"
               dominantBaseline="middle"
-              transform={`rotate(${index * 30}, ${point.x}, ${point.y})`}
+              transform={`rotate(${i * 30}, ${point.x}, ${point.y})`}
             >
               {sign}
             </text>
@@ -166,7 +164,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
         {/* Render celestial bodies if data is available */}
         {celestialData && (
           <g>
-            {celestialData.table.rows.map((row, index) => {
+            {celestialData.table.rows.map((row) => {
               const body = row.cells[0];
               // Calculate the angle based on right ascension (converting hours to degrees)
               const angle = (parseFloat(body.position.equatorial.rightAscension.hours) / 24) * 360;
@@ -192,8 +190,8 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData, birthDate, bir
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
       >
-        {zodiacSigns.map((sign, index) => {
-          const angle = (index * 30 - 75) * (Math.PI / 180);
+        {zodiacSigns.map((sign, i) => {
+          const angle = (i * 30 - 75) * (Math.PI / 180);
           const point = getCoordinates(angle, symbolRadius);
           return (
             <motion.div
