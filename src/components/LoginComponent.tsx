@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Mail, Star, Users, Briefcase, MessageCircle, Spade } from 'lucide-react';
 import ZodiacWheel from './ZodiacWheel'; 
+import Image from 'next/image';
 
 const features = [
   {
@@ -142,7 +143,7 @@ const LoginComponent: React.FC = () => {
                 onClick={handleAppleSignIn}
                 className="w-full bg-black hover:bg-gray-800 text-white font-bold rounded-xl transition-all duration-300 ease-in-out text-sm flex items-center justify-center"
               >
-                <img src="/apple.png" alt="Apple" className="mr-2 w-5 h-5" />
+                <Image src="/apple.png" alt="Apple" className="mr-2 w-5 h-5" />
                 Sign up with Apple
               </Button>
               <Button
@@ -150,7 +151,7 @@ const LoginComponent: React.FC = () => {
                 onClick={handleGoogleSignIn}
                 className="w-full bg-white hover:bg-gray-100 text-gray-800 font-bold rounded-xl transition-all duration-300 ease-in-out text-sm flex items-center justify-center"
               >
-                <img src="/google.png" alt="Google" className="mr-2 w-5 h-5" />
+                <Image src="/google.png" alt="Google" className="mr-2 w-5 h-5" />
                 Sign up with Google
               </Button>
 

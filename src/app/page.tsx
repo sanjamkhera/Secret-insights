@@ -7,12 +7,12 @@ import WeeklyHoroscope from '@/components/WeeklyHoroscope';
 // Import the ZodiacSign type from the types file
 import { ZodiacSign } from '@/types';
 // Import the NatalChart component from the components folder
-import NatalChartProps from '@/components/NatalChart';
+// import NatalChartProps from '@/components/NatalChart';
 import LoginComponent from '@/components/LoginComponent';
-import AIChat from '@/components/AIChat';
-import CareerInsights from '@/components/CareerInsights';
-import Compatibility from '@/components/Compatibility';
-import TarotCards from '@/components/TarotCards';
+// import AIChat from '@/components/AIChat';
+// import CareerInsights from '@/components/CareerInsights';
+// import Compatibility from '@/components/Compatibility';
+// import TarotCards from '@/components/TarotCards';
 import { Sun, Moon, Star, Sparkles, Eclipse, SunMoon, Zap } from 'lucide-react';
 
 // Define the main Home component as the default export
@@ -24,12 +24,12 @@ export default function Home() {
     // Add any additional logic here when a sign is selected
   };
 
-  // Define a function to handle natal chart generation
-  const handleChartGenerate = (birthInfo: { date: string; time: string; location: string }) => {
-    // Log the birth information to the console
-    console.log(birthInfo);
-    // Add any additional logic here when a chart is generated
-  };
+  // // Define a function to handle natal chart generation
+  // const handleChartGenerate = (birthInfo: { date: string; time: string; location: string }) => {
+  //   // Log the birth information to the console
+  //   console.log(birthInfo);
+  //   // Add any additional logic here when a chart is generated
+  // };
 
   // Render the component
   return (

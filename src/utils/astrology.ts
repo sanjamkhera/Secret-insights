@@ -70,7 +70,7 @@ export function calculateAscendant(data: CelestialData): ZodiacPosition {
   const jd = astronomia.julian.DateToJD(date);
 
   // Calculate Local Sidereal Time (LST)
-  const lst = astronomia.sidereal.apparent(jd, longitude);
+  // const lst = astronomia.sidereal.apparent(jd, longitude);
 
   // Calculate the obliquity of the ecliptic
   const obliquity = astronomia.nutation.meanObliquity(jd);

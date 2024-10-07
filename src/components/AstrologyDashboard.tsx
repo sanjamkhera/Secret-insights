@@ -5,10 +5,17 @@ import axios from 'axios';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sun, Moon, Star, Sparkles, Compass, Heart, Zap } from 'lucide-react';
 import { calculateAscendant, getSunSign, getMoonSign } from '@/utils/astrology';
 import { CelestialData, SignInfo, ZodiacPosition, ZodiacSign } from '@/types/celestialData';
+
+type Horoscope = {
+  content: string;
+  mood: string;
+  luckyNumber: number;
+  compatibility: ZodiacSign;
+};
 
 const AstrologyDashboard: React.FC = () => {
   // State variables
@@ -19,7 +26,7 @@ const AstrologyDashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [celestialData, setCelestialData] = useState<CelestialData | null>(null);
-  const [horoscope, setHoroscope] = useState<any | null>(null);
+  const [horoscope, setHoroscope] = useState<Horoscope | null>(null);
 
   // Zodiac signs array
   const zodiacSigns: ZodiacSign[] = [
@@ -167,9 +174,8 @@ const AstrologyDashboard: React.FC = () => {
   };
 
   // Function to generate horoscope
-  const generateHoroscope = (sign: ZodiacSign, signInfo: SignInfo): any => {
+  const generateHoroscope = (sign: ZodiacSign, signInfo: SignInfo): Horoscope => {
     const characteristics = zodiacCharacteristics[sign];
-    const compatibleSign = getCompatibleSign(sign);
 
     const templates = [
       `As a {sign}, your {element} nature is on fire today! The Sun in {sunSign} is giving you that extra {trait1} energy, while the Moon in {moonSign} is amplifying your {trait2} vibes. Your {quality} quality is your secret weapon - use it to slay any challenges that come your way!`,
@@ -181,19 +187,19 @@ const AstrologyDashboard: React.FC = () => {
 
     const horoscopeContent = template
       .replace(/{sign}/g, sign)
-      .replace(/{element}/g, characteristics.element)
-      .replace(/{quality}/g, characteristics.quality)
-      .replace(/{trait1}/g, characteristics.traits[0])
-      .replace(/{trait2}/g, characteristics.traits[1])
-      .replace(/{trait3}/g, characteristics.traits[4])
       .replace(/{sunSign}/g, signInfo.sunSign.sign)
-      .replace(/{moonSign}/g, signInfo.moonSign.sign);
+      .replace(/{moonSign}/g, signInfo.moonSign.sign)
+      .replace(/{element}/g, characteristics.element)
+      .replace(/{trait1}/g, characteristics.traits[1])
+      .replace(/{trait2}/g, characteristics.traits[2])
+      .replace(/{trait3}/g, characteristics.traits[3])
+      .replace(/{quality}/g, characteristics.quality);
 
     return {
       content: horoscopeContent,
-      mood: characteristics.traits[Math.floor(Math.random() * characteristics.traits.length)],
-      luckyNumber: Math.floor(Math.random() * 100) + 1,
-      compatibility: compatibleSign,
+      mood: "Positive",
+      luckyNumber: Math.floor(Math.random() * 100),
+      compatibility: getCompatibleSign(sign)
     };
   };
 

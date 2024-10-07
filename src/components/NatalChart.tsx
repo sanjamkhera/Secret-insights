@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Sun, Moon, Star, Sparkles, Compass } from 'lucide-react';
 import { calculateAscendant, getSunSign, getMoonSign } from '@/utils/astrology';
 import { CelestialData, SignInfo, ZodiacPosition } from '@/types/celestialData';
-import ZodiacWheel from './ZodiacWheel'; 
+import ZodiacWheel from './ZodiacWheel';
 
 interface NatalChartProps {
   onChartGenerate: (birthInfo: { date: string; time: string; location: string }) => void;
@@ -94,75 +94,75 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
     }
   };
 
-  const zodiacConstellations = [
-    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-    "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
-  ];
+  // const zodiacConstellations = [
+  //   "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+  //   "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+  // ];
 
-  const renderCelestialData = () => {
-    if (!celestialData) return null;
+  // const renderCelestialData = () => {
+  //   if (!celestialData) return null;
 
-    return (
-      <Card className="mt-6 bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 border-purple-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
-        <CardHeader className="pb-2">
-          <h2 className="text-2xl font-bold text-center">Celestial Bodies in Zodiac Constellations</h2>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2 max-h-60 overflow-y-auto">
-            {celestialData.table.rows.map((row, index) => {
-              const zodiacCell = row.cells.find(cell =>
-                zodiacConstellations.includes(cell.position.constellation.name)
-              );
+  //   return (
+  //     <Card className="mt-6 bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 border-purple-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
+  //       <CardHeader className="pb-2">
+  //         <h2 className="text-2xl font-bold text-center">Celestial Bodies in Zodiac Constellations</h2>
+  //       </CardHeader>
+  //       <CardContent>
+  //         <div className="space-y-2 max-h-60 overflow-y-auto">
+  //           {celestialData.table.rows.map((row, index) => {
+  //             const zodiacCell = row.cells.find(cell =>
+  //               zodiacConstellations.includes(cell.position.constellation.name)
+  //             );
 
-              if (zodiacCell) {
-                return (
-                  <div key={index} className="flex flex-col mb-4">
-                    <h3 className="font-bold">{row.entry.name}</h3>
-                    <div className="flex justify-between">
-                      <span>Constellation:</span>
-                      <span>{zodiacCell.position.constellation.name}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Position:</span>
-                      <span>
-                        RA: {zodiacCell.position.equatorial.rightAscension.string},
-                        Dec: {zodiacCell.position.equatorial.declination.string}
-                      </span>
-                    </div>
-                  </div>
-                );
-              }
-              return null;
-            })}
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
+  //             if (zodiacCell) {
+  //               return (
+  //                 <div key={index} className="flex flex-col mb-4">
+  //                   <h3 className="font-bold">{row.entry.name}</h3>
+  //                   <div className="flex justify-between">
+  //                     <span>Constellation:</span>
+  //                     <span>{zodiacCell.position.constellation.name}</span>
+  //                   </div>
+  //                   <div className="flex justify-between">
+  //                     <span>Position:</span>
+  //                     <span>
+  //                       RA: {zodiacCell.position.equatorial.rightAscension.string},
+  //                       Dec: {zodiacCell.position.equatorial.declination.string}
+  //                     </span>
+  //                   </div>
+  //                 </div>
+  //               );
+  //             }
+  //             return null;
+  //           })}
+  //         </div>
+  //       </CardContent>
+  //     </Card>
+  //   );
+  // };
 
 
   const formatZodiacPosition = (position: ZodiacPosition) => {
     return `${position.sign}`;
   };
 
-  const getZodiacSymbol = (sign: string) => {
-    const symbols: { [key: string]: string } = {
-      "Aries": "♈", "Taurus": "♉", "Gemini": "♊", "Cancer": "♋",
-      "Leo": "♌", "Virgo": "♍", "Libra": "♎", "Scorpio": "♏",
-      "Sagittarius": "♐", "Capricorn": "♑", "Aquarius": "♒", "Pisces": "♓"
-    };
-    return symbols[sign] || sign;
-  };
+  // const getZodiacSymbol = (sign: string) => {
+  //   const symbols: { [key: string]: string } = {
+  //     "Aries": "♈", "Taurus": "♉", "Gemini": "♊", "Cancer": "♋",
+  //     "Leo": "♌", "Virgo": "♍", "Libra": "♎", "Scorpio": "♏",
+  //     "Sagittarius": "♐", "Capricorn": "♑", "Aquarius": "♒", "Pisces": "♓"
+  //   };
+  //   return symbols[sign] || sign;
+  // };
 
-  const zodiacPositionToSVGCoords = (position: ZodiacPosition, radius: number = 170): { x: number, y: number } => {
-    const zodiacSigns = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
-    const signIndex = zodiacSigns.indexOf(position.sign);
-    const angle = ((signIndex * 30 + position.degree) * Math.PI / 180) - (Math.PI / 2);
-    return {
-      x: 200 + radius * Math.cos(angle),
-      y: 200 + radius * Math.sin(angle)
-    };
-  };
+  // const zodiacPositionToSVGCoords = (position: ZodiacPosition, radius: number = 170): { x: number, y: number } => {
+  //   const zodiacSigns = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+  //   const signIndex = zodiacSigns.indexOf(position.sign);
+  //   const angle = ((signIndex * 30 + position.degree) * Math.PI / 180) - (Math.PI / 2);
+  //   return {
+  //     x: 200 + radius * Math.cos(angle),
+  //     y: 200 + radius * Math.sin(angle)
+  //   };
+  // };
 
   return (
     <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mt-8">
@@ -234,10 +234,10 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
               </CardContent>
             </Card>
 
-          </div>            
+          </div>
         )}<div className="flex flex-col items-center">
-              <ZodiacWheel />
-            </div>
+          <ZodiacWheel />
+        </div>
       </CardContent>
 
       <CardFooter className="justify-center pb-4">
@@ -245,6 +245,16 @@ const NatalChart: React.FC<NatalChartProps> = ({ onChartGenerate }) => {
           Your cosmic journey begins with understanding your celestial origins
         </p>
       </CardFooter>
+
+      <div>
+        {/* Your existing JSX code */}
+        {celestialData && (
+          <div>
+            {/* Render celestial data */}
+            <pre>{JSON.stringify(celestialData, null, 2)}</pre>
+          </div>
+        )}
+      </div>
     </Card>
   );
 };

@@ -5,7 +5,8 @@ import { ZodiacSign } from '@/types';
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Sparkles, Heart, Zap } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 interface WeeklyHoroscopeProps { onSignSelect: (sign: ZodiacSign) => void; }
 
@@ -108,7 +109,7 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
               Consulting the Celestial Spheres...
             </>
           ) : (
-            'Reveal My Celestial Horoscope'
+            'Reveal My Celestial Horoscope'.replace("'", "&#39;")
           )}
         </Button>
 
@@ -116,9 +117,9 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
           <div className="space-y-4 mt-4">
             <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
               <CardHeader className="pb-2 flex items-center justify-center">
-                <img 
-                  src={getZodiacImage(revealedSign as ZodiacSign)} 
-                  alt={revealedSign} 
+                <Image
+                  src={getZodiacImage(revealedSign as ZodiacSign)}
+                  alt={revealedSign}
                   className="w-16 h-16 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = '/default.png';
@@ -140,7 +141,7 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
           </CardHeader>
           <CardContent>
             <p className="text-lg text-justify">
-              The planet Jupiter is associated with wealth, good fortune and increase. It also represents the glue that holds society together through laws, religions, libraries and universities. Jupiter aspires to a higher expression of ourselves. Every 12 years, it stays in one sign for a year, bringing us different benefits and opportunities. Right now, Jupiter is in Gemini from May 2024 until June 2025. (The last time Jupiter was in Gemini was June 2012 to July 2013.) Before that it was from 2000 to 2001; from 1989 to 1990; and from 1977 to 1978. Small wonder it's the largest planet in our solar system. In fact, Jupiter is so big, you could fit ALL the other planets inside it -- and still have room for three sesame seeds and the heart of a Hollywood producer.
+              The planet Jupiter is associated with wealth, good fortune and increase. It also represents the glue that holds society together through laws, religions, libraries and universities. Jupiter aspires to a higher expression of ourselves. Every 12 years, it stays in one sign for a year, bringing us different benefits and opportunities. Right now, Jupiter is in Gemini from May 2024 until June 2025. (The last time Jupiter was in Gemini was June 2012 to July 2013.) Before that it was from 2000 to 2001; from 1989 to 1990; and from 1977 to 1978. Small wonder it&#39;s the largest planet in our solar system. In fact, Jupiter is so big, you could fit ALL the other planets inside it -- and still have room for three sesame seeds and the heart of a Hollywood producer.
             </p>
           </CardContent>
         </Card>
