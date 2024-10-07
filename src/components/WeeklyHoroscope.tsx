@@ -76,10 +76,10 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
   };
 
   return (
-    <Card className="bg-transparent text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform">
+    <Card className="bg-transparent text-white shadow-lg border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform">
       <CardHeader className="pb-2">
         <div className="text-center">
-          <h1 className="text-3xl font-bold font-cursive leading-relaxed text-gray-200">Weekly Horoscope</h1>
+          <h1 className="text-3xl font-bold leading-relaxed text-gray-200">Weekly Horoscope</h1>
           <p className="text-lg font-cursive tracking-wide text-gray-200">(October 6)</p>
         </div>
       </CardHeader>

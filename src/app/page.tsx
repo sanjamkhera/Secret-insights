@@ -34,8 +34,8 @@ export default function Home() {
   // Render the component
   return (
     <>
-      <div className='text-center pt-4 pb-2 mb-2'>
-        <h1 className="text-4xl font-bold font-cursive leading-relaxed text-gray-200 pt-2">Celestial Insights</h1>
+      <div className='relative text-center pt-4 pb-2 mb-2'>
+        <h1 className="text-4xl font-bold leading-relaxed text-gray-200 pt-2">Celestial Insights</h1>
         <p className="text-2xl font-fancy leading-relaxed text-gray-400">Unlock the wisdom of the stars</p>
         <div className="flex justify-center space-x-4 mt-4">
           <Sun className="text-yellow-300 animate-spin-slow" size={24} />
