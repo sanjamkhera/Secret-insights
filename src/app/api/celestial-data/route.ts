@@ -6,9 +6,20 @@ const ASTRONOMY_API_ID = process.env.ASTRONOMY_API_ID;
 const ASTRONOMY_API_SECRET = process.env.ASTRONOMY_API_SECRET;
 
 const GEOCODING_API_URL = 'https://api.opencagedata.com/geocode/v1/json';
-const GEOCODING_API_KEY = process.env.GEOCODING_API_KEY;
+const GEOCODING_API_KEY = process.env.NEXT_PUBLIC_GEOCODING_API_KEY;
 
 export async function GET(request: NextRequest) {
+  // Check if required environment variables are set
+  if (!ASTRONOMY_API_ID || !ASTRONOMY_API_SECRET) {
+    console.error('Missing ASTRONOMY_API_ID or ASTRONOMY_API_SECRET environment variables');
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+  }
+
+  if (!GEOCODING_API_KEY) {
+    console.error('Missing GEOCODING_API_KEY environment variable');
+    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+  }
+
   const searchParams = request.nextUrl.searchParams;
   const date = searchParams.get('date');
   const time = searchParams.get('time');
@@ -54,14 +65,17 @@ export async function GET(request: NextRequest) {
       params: {
         latitude: lat.toFixed(4),
         longitude: lng.toFixed(4),
-        elevation: 0, // Add elevation parameter
+        elevation: 0,
         from_date: formattedDate,
         to_date: formattedDate,
         time: formattedTime
       },
       auth: {
-        username: ASTRONOMY_API_ID as string,
-        password: ASTRONOMY_API_SECRET as string
+        username: ASTRONOMY_API_ID!, // Non-null assertion
+        password: ASTRONOMY_API_SECRET! // Non-null assertion
+      },
+      headers: {
+        'Content-Type': 'application/json'
       }
     });
 
@@ -77,7 +91,12 @@ export async function GET(request: NextRequest) {
         console.error('API Error Messages:', error.response.data.errors);
       }
 
-      return NextResponse.json({ error: error.response.data }, { status: error.response.status });
+      // Include more detailed error information in the response
+      return NextResponse.json({
+        error: 'API request failed',
+        details: error.response.data,
+        status: error.response.status
+      }, { status: error.response.status });
     } else {
       console.error('Unexpected error:', error);
     }

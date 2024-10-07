@@ -18,7 +18,7 @@ export interface User {
   };
 }
 
-export interface DailyHoroscope {
+export interface WeeklyHoroscope {
   content: string;
   mood: string;
   luckyNumber: number;
@@ -41,13 +41,13 @@ export interface ZodiacSignInfo {
   rulingPlanet: string;
   symbol: string;
   dateRange: {
-    start: string; // MM-DD format
-    end: string; // MM-DD format
+    start: string; 
+    end: string; 
   };
 }
 
 export interface PlanetaryPositions {
-  date: string; // YYYY-MM-DD format
+  date: string; 
   sun: string;
   moon: string;
   mercury: string;

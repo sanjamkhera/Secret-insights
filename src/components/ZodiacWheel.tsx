@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CelestialData } from '@/types/celestialData';
+import { Eclipse } from 'lucide-react';
 
 // Define the list of Zodiac signs in order
 const zodiacSigns = [
@@ -15,38 +16,36 @@ const zodiacSymbols: { [key: string]: string } = {
   'Sagittarius': '♐', 'Capricorn': '♑', 'Aquarius': '♒', 'Pisces': '♓'
 };
 
-// Simplified constellation patterns (adjust as needed)
+// Simplified constellation patterns (adjusted to be centered)
+// Each constellation is represented by an array of [x, y] coordinate pairs
 const constellations: { [key: string]: [number, number][] } = {
-  'Aries': [[0, 0], [10, 10], [20, 5], [30, 15]],
-  'Taurus': [[0, 0], [10, 10], [20, 5], [15, -5], [25, -10]],
-  'Gemini': [[0, 0], [5, 10], [10, 20], [15, 30], [20, 20], [25, 10], [30, 0]],
-  'Cancer': [[0, 0], [10, 5], [20, 0], [15, 10], [25, 15]],
-  'Leo': [[0, 0], [10, 5], [20, 0], [15, 10], [25, 15], [20, 25], [10, 20], [0, 25]],
-  'Virgo': [[0, 0], [5, 10], [10, 20], [15, 10], [20, 0], [25, 10], [30, 20]],
-  'Libra': [[0, 0], [10, 10], [20, 0], [30, 10]],
-  'Scorpio': [[0, 0], [10, 5], [20, 0], [30, 5], [25, 15], [35, 20]],
-  'Sagittarius': [[0, 0], [10, 10], [20, 5], [30, 15], [25, 25], [15, 20], [5, 30]],
-  'Capricorn': [[0, 0], [10, 10], [20, 5], [30, 15], [35, 5], [25, -5]],
-  'Aquarius': [[0, 0], [10, 5], [20, 0], [30, 5], [25, 15], [15, 20], [5, 15]],
-  'Pisces': [[0, 0], [10, 5], [20, 0], [30, 5], [20, 15], [10, 20], [0, 15]]
+  'Aries': [[-15, -15], [-5, -5], [5, -10], [15, 0]],
+  'Taurus': [[-15, -5], [-5, 5], [5, 0], [0, -10], [10, -15]],
+  'Gemini': [[-15, -15], [-10, -5], [-5, 5], [0, 15], [5, 5], [10, -5], [15, -15]],
+  'Cancer': [[-15, -7], [-5, -2], [5, -7], [0, 3], [10, 8]],
+  'Leo': [[-15, -12], [-5, -7], [5, -12], [0, -2], [10, 3], [5, 13], [-5, 8], [-15, 13]],
+  'Virgo': [[-15, -10], [-10, 0], [-5, 10], [0, 0], [5, -10], [10, 0], [15, 10]],
+  'Libra': [[-15, -5], [-5, 5], [5, -5], [15, 5]],
+  'Scorpio': [[-15, -7], [-5, -2], [5, -7], [15, -2], [10, 8], [20, 13]],
+  'Sagittarius': [[-15, -15], [-5, -5], [5, -10], [15, 0], [10, 10], [0, 5], [-10, 15]],
+  'Capricorn': [[-15, -7], [-5, 3], [5, -2], [15, 8], [20, -2], [10, -12]],
+  'Aquarius': [[-15, -7], [-5, -2], [5, -7], [15, -2], [10, 8], [0, 13], [-10, 8]],
+  'Pisces': [[-15, -7], [-5, -2], [5, -7], [15, -2], [5, 8], [-5, 13], [-15, 8]]
 };
 
-// Props interface for the ZodiacWheel component
-interface ZodiacWheelProps {
-  celestialData: CelestialData | null;
-}
 
-const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
+const ZodiacWheel: React.FC = () => {
   // Define the dimensions and radii for the wheel
-  const size = 360;
-  const padding = 30;
-  const adjustedSize = size + padding * 2;
-  const center = adjustedSize / 2;
-  const outerRadius = size / 2;
-  const innerRadius = outerRadius - 53;
-  const symbolRadius = innerRadius - 40;
-  const constellationRadius = innerRadius + 22;
-  const textRadius = outerRadius + 15;
+  const size = 320; // Overall size of the wheel
+  const padding = 30; // Padding around the wheel
+  const adjustedSize = size + padding * 2; // Total size including padding
+  const center = adjustedSize / 2; // Center point of the wheel
+  const outerRadius = size / 2; // Radius of the outer circle
+  const innerRadius = outerRadius - 25; // Radius of the inner circle
+  const symbolRadius = outerRadius - 90; // Radius for placing zodiac symbols
+  const constellationRadius = outerRadius - 50;; // Radius for placing constellations
+  const textRadius = outerRadius - 13; // Radius for placing zodiac sign names
+  const innerCircleRadius = 34; // New variable: Radius of the innermost circle
 
   // Helper function to calculate coordinates on the circle
   const getCoordinates = (angle: number, r: number) => ({
@@ -57,23 +56,14 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
   return (
     <div className="relative">
       {/* Main SVG container with rotation animation */}
-      <motion.svg 
-        width={adjustedSize} 
-        height={adjustedSize} 
+      <motion.svg
+        width={adjustedSize}
+        height={adjustedSize}
         viewBox={`0 0 ${adjustedSize} ${adjustedSize}`}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        animate={{ rotate: 360 }} // Rotate 360 degrees
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }} // Take 60 seconds to complete one rotation, repeat infinitely
         className={'m-3'}
       >
-        {/* Generate random stars for the background */}
-        {Array.from({ length: 50 }).map((_, i) => {
-          const x = Math.random() * adjustedSize;
-          const y = Math.random() * adjustedSize;
-          const opacity = Math.random() * 0.5 + 0.5;
-          return (
-            <circle key={i} cx={x} cy={y} r={Math.random() * 0.8 + 0.2} fill="white" opacity={opacity} />
-          );
-        })}
 
         {/* Draw the outer and inner circles of the wheel */}
         <circle cx={center} cy={center} r={outerRadius} fill="none" stroke="white" strokeWidth="2" />
@@ -81,8 +71,8 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
 
         {/* Draw the dividing lines for each zodiac sign */}
         {zodiacSigns.map((_, i) => {
-          const angle = (i * 30 - 90) * (Math.PI / 180);
-          const innerPoint = getCoordinates(angle, innerRadius);
+          const angle = (i * 30 - 90) * (Math.PI / 180); // Convert degrees to radians, subtract 90 to start at top
+          const innerPoint = getCoordinates(angle, innerCircleRadius);
           const outerPoint = getCoordinates(angle, outerRadius);
           return (
             <line
@@ -102,15 +92,15 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
           const angle = (i * 30 - 75) * (Math.PI / 180);
           const basePoint = getCoordinates(angle, constellationRadius);
           const pattern = constellations[sign];
-          
+
           return (
             <g key={`constellation-${sign}`}>
               {/* Draw stars */}
               {pattern.map((point, j) => (
                 <circle
                   key={`star-${j}`}
-                  cx={basePoint.x + point[0] - 15}
-                  cy={basePoint.y + point[1] - 15}
+                  cx={basePoint.x + point[0]}
+                  cy={basePoint.y + point[1]}
                   r="1"
                   fill="#8a2be2"
                 />
@@ -119,10 +109,10 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
               {pattern.slice(1).map((point, j) => (
                 <line
                   key={`line-${j}`}
-                  x1={basePoint.x + pattern[j][0] - 15}
-                  y1={basePoint.y + pattern[j][1] - 15}
-                  x2={basePoint.x + point[0] - 15}
-                  y2={basePoint.y + point[1] - 15}
+                  x1={basePoint.x + pattern[j][0]}
+                  y1={basePoint.y + pattern[j][1]}
+                  x2={basePoint.x + point[0]}
+                  y2={basePoint.y + point[1]}
                   stroke="#8a2be2"
                   strokeWidth="1"
                 />
@@ -132,18 +122,12 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
         })}
 
         {/* Draw inner circles (like a clock face) */}
-        <circle cx={center} cy={center} r="45" fill="none" stroke="white" strokeWidth="1" />
-        <circle cx={center} cy={center} r="30" fill="none" stroke="white" strokeWidth="1" />
 
-        {/* Add Roman numerals for clock positions */}
-        <text x={center} y={center - 38} fill="white" fontSize="12" textAnchor="middle">XII</text>
-        <text x={center + 38} y={center} fill="white" fontSize="12" textAnchor="start">III</text>
-        <text x={center} y={center + 42} fill="white" fontSize="12" textAnchor="middle">VI</text>
-        <text x={center - 38} y={center} fill="white" fontSize="12" textAnchor="end">IX</text>
+        <circle cx={center} cy={center} r={innerCircleRadius} fill="none" stroke="white" strokeWidth="1" />
 
         {/* Add zodiac sign names in a circular pattern */}
         {zodiacSigns.map((sign, i) => {
-          const angle = (i * 30 - 90) * (Math.PI / 180);
+          const angle = (i * 30 - 90 + 15) * (Math.PI / 180);
           const point = getCoordinates(angle, textRadius);
           return (
             <text
@@ -151,59 +135,37 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
               x={point.x}
               y={point.y}
               fill="white"
-              fontSize="12"
+              fontSize="11"
               textAnchor="middle"
               dominantBaseline="middle"
-              transform={`rotate(${i * 30}, ${point.x}, ${point.y})`}
+              transform={`rotate(${(i * 30 + 15)}, ${point.x}, ${point.y})`} // Rotate text to align with wheel
             >
               {sign}
             </text>
           );
         })}
-
-        {/* Render celestial bodies if data is available */}
-        {celestialData && (
-          <g>
-            {celestialData.table.rows.map((row) => {
-              const body = row.cells[0];
-              // Calculate the angle based on right ascension (converting hours to degrees)
-              const angle = (parseFloat(body.position.equatorial.rightAscension.hours) / 24) * 360;
-              const point = getCoordinates((angle - 90) * (Math.PI / 180), innerRadius - 10);
-              return (
-                <circle
-                  key={body.id}
-                  cx={point.x}
-                  cy={point.y}
-                  r={3}
-                  fill="yellow"
-                  // You might want to add a title or other identifier here
-                />
-              );
-            })}
-          </g>
-        )}
       </motion.svg>
-      
+
       {/* Rotating container for zodiac symbols */}
-      <motion.div 
-        className="absolute top-0 left-0 w-full h-full"
+      <motion.div
+        className="absolute top-[1px] left-0 w-full h-full"
         animate={{ rotate: 360 }}
         transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
       >
         {zodiacSigns.map((sign, i) => {
-          const angle = (i * 30 - 75) * (Math.PI / 180);
+          const angle = (i * 30 - 75) * (Math.PI / 180); // Subtract 75 to center within each segment
           const point = getCoordinates(angle, symbolRadius);
           return (
             <motion.div
               key={`symbol-${sign}`}
-              className="absolute text-fuchsia-500 text-xl"
+              className="absolute text-fuchsia-500 text-sm"
               style={{
                 left: `${point.x}px`,
                 top: `${point.y}px`,
                 transform: 'translate(-50%, -50%)',
                 textShadow: '0 0 5px #ff00ff',
               }}
-              animate={{ rotate: -360 }}
+              animate={{ rotate: -360 }} // Counter-rotate to keep symbols upright
               transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
             >
               {zodiacSymbols[sign]}
@@ -211,6 +173,13 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ celestialData }) => {
           );
         })}
       </motion.div>
+
+      <div
+        className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none"
+        style={{ transform: `translate(${padding - 30}px, ${padding - 30}px)` }}
+      >
+        <Eclipse size={36} color="white" />
+      </div>
     </div>
   );
 };

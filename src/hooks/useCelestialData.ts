@@ -1,34 +1,41 @@
-import { useState, useEffect } from 'react';
+
 import axios from 'axios';
-import { CelestialData } from '@/types/celestialData';
 
-export const useCelestialData = (birthDate: string, birthTime: string, birthCity: string) => {
-  const [data, setData] = useState<CelestialData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!birthDate || !birthTime || !birthCity) return;
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const response = await axios.get('/api/celestial-data', {
-          params: { date: birthDate, time: birthTime, city: birthCity }
-        });
-        setData(response.data);
-      } catch (err) {
-        setError('Failed to fetch celestial data. Please try again.');
-        console.error('Error fetching celestial data:', err);
-      } finally {
-        setIsLoading(false);
+export const useCelestialData = () => {
+  const fetchCelestialData = async (params: {
+    latitude: string;
+    longitude: string;
+    elevation: string;
+    from_date: string;
+    to_date: string;
+    time: string;
+  }) => {
+    try {
+      const response = await axios.get('https://api.astronomyapi.com/api/v2/bodies/positions', {
+        params: {
+          latitude: params.latitude,
+          longitude: params.longitude,
+          elevation: params.elevation,
+          from_date: params.from_date,
+          to_date: params.to_date,
+          time: params.time
+        },
+        headers: {
+          'Authorization': 'Basic ' + btoa(`${process.env.NEXT_PUBLIC_ASTRONOMY_API_ID}:${process.env.NEXT_PUBLIC_ASTRONOMY_API_SECRET}`)
+        }
+      });
+      
+      console.log('Celestial Data:', response.data);
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        console.error(`Failed to fetch celestial data: ${err.response.status} ${err.response.statusText}`);
+        console.error('Error response:', err.response.data);
+      } else {
+        console.error('Failed to fetch celestial data. Please try again.');
       }
-    };
+      console.error('Error fetching celestial data:', err);
+    }
+  };
 
-    fetchData();
-  }, [birthDate, birthTime, birthCity]);
-
-  return { data, isLoading, error };
+  return { fetchCelestialData };
 };
