@@ -34,27 +34,29 @@ export default function Home() {
   // Render the component
   return (
     <>
-      <div className='relative text-center pt-4 pb-2 mb-2'>
-        <h1 className="text-4xl font-bold leading-relaxed text-gray-200 pt-2">Celestial Insights</h1>
-        <p className="text-2xl font-fancy leading-relaxed text-gray-400">Unlock the wisdom of the stars</p>
-        <div className="flex justify-center space-x-4 mt-4">
-          <Sun className="text-yellow-300 animate-spin-slow" size={24} />
-          <Moon className="text-blue-300 animate-pulse" size={24} />
-          <Star className="text-cyan-300 animate-twinkle" size={24} />
-          <Eclipse className="text-orange-300 animate-pulse" size={24} />
-          <Zap className="text-green-300 animate-pulse" size={24} />
-          <SunMoon className="text-purple-300 animate-pulse" size={24} />
-          <Sparkles className="text-pink-300 animate-pulse" size={24} />
+      <div className="w-screen mx-auto">
+        <div className='relative text-center pt-4 pb-2 mb-2'>
+          <h1 className="text-4xl font-bold leading-relaxed text-gray-200 pt-2">Celestial Insights</h1>
+          <p className="text-2xl font-fancy leading-relaxed text-gray-400">Unlock the wisdom of the stars</p>
+          <div className="flex justify-center space-x-4 mt-4">
+            <Sun className="text-yellow-300 animate-spin-slow" size={24} />
+            <Moon className="text-blue-300 animate-pulse" size={24} />
+            <Star className="text-cyan-300 animate-twinkle" size={24} />
+            <Eclipse className="text-orange-300 animate-pulse" size={24} />
+            <Zap className="text-green-300 animate-pulse" size={24} />
+            <SunMoon className="text-purple-300 animate-pulse" size={24} />
+            <Sparkles className="text-pink-300 animate-pulse" size={24} />
+          </div>
         </div>
-      </div>
 
-      <WeeklyHoroscope onSignSelect={handleSignSelect} />
-      <LoginComponent />
-      {/* <AIChat /> */}
-      {/* <NatalChartProps onChartGenerate={handleChartGenerate} /> */}
-      {/* <CareerInsights />
-      <Compatibility />
-      <TarotCards /> */}
+        <WeeklyHoroscope onSignSelect={handleSignSelect} />
+        <LoginComponent />
+        {/* <AIChat /> */}
+        {/* <NatalChartProps onChartGenerate={handleChartGenerate} /> */}
+        {/* <CareerInsights />
+  <Compatibility />
+  <TarotCards /> */}
+      </div>
     </>
   );
 }
