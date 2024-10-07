@@ -23,11 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
-      <body className={inter.className}>
+    <html lang="en" className="w-full">
+      <body className={`${inter.className} max-w-[100vw] overflow-x-hidden mx-auto`}>
         {/* Render the dynamically imported StarryGalaxyBackground */}
         <StarryGalaxyBackground />
         {/* Main content wrapper with z-index to appear above the background */}

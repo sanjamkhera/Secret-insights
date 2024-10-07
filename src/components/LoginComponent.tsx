@@ -23,17 +23,17 @@ const features = [
   {
     icon: <Users className="text-pink-300" size={28} />,
     title: "Compatibility Analysis",
-    description: "Explore your astrological connections with others."
+    description: "Explore your connections with others."
   },
   {
     icon: <Briefcase className="text-green-300" size={28} />,
     title: "Career Insights",
-    description: "Align your career with your astrological destiny."
+    description: "Align your career with your destiny."
   },
   {
     icon: <MessageCircle className="text-purple-300" size={28} />,
     title: "AI Astro-Chat Bot",
-    description: "Get instant answers to your cosmic questions."
+    description: "Get instant answers to your questions."
   },
   {
     icon: <Spade className="text-orange-300" size={28} />,
@@ -107,10 +107,11 @@ const LoginComponent: React.FC = () => {
           {isSignUp ? 'Join the world of stars' : 'Return to your constellation'}
         </h1>
       </CardHeader>
-      <div className="bg-transparent bg-opacity-50 rounded-xl px-4 ">
-        <h2 className="text-xl font-bold text-center text-white mb-4">
+      <div className="bg-transparent bg-opacity-50 rounded-xl px-4">
+        <h2 className="text-2xl font-cursive text-center text-white mb-4">
           Free Cosmic Services
         </h2>
+
         <div className="relative h-24 overflow-hidden">
           {features.map((feature, index) => (
             <div

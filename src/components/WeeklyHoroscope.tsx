@@ -121,6 +121,7 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
                   src={getZodiacImage(revealedSign as ZodiacSign)}
                   alt={revealedSign}
                   className="w-16 h-16 object-contain"
+                  width={64} // Added width property
                   onError={(e) => {
                     e.currentTarget.src = '/default.png';
                     console.error(`Failed to load image for ${revealedSign}`);
@@ -148,8 +149,8 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
       </CardContent>
 
       <CardFooter className="justify-center pb-4">
-        <p className="text-sm sm:text-lg font-cursive leading-relaxed text-white text-center">
-          Follow your path and reach for the stars
+        <p className="text-lg font-cursive leading-relaxed text-white text-center">
+          Follow your celestial path
         </p>
       </CardFooter>
     </Card>
