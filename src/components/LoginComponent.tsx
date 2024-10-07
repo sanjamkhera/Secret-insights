@@ -101,7 +101,7 @@ const LoginComponent: React.FC = () => {
   };
 
   return (
-    <Card className="bg-transparent bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mt-6 pb-6">
+    <Card className="bg-transparent bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mt-6 pb-6 non-draggable">
       <CardHeader className="pb-2">
         <h1 className="text-3xl font-bold text-center">
           {isSignUp ? 'Join the world of stars' : 'Return to your constellation'}
