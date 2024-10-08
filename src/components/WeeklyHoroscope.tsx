@@ -84,34 +84,52 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
         </div>
       </CardHeader>
 
-      <CardContent className="px-6">
-        <Select onValueChange={(value) => setSelectedSign(value as ZodiacSign)}>
-          <SelectTrigger className="w-full bg-blue-900 border-blue-700 text-white rounded-xl my-4">
-            <SelectValue placeholder="Select Your Zodiac Sign" />
-          </SelectTrigger>
-          <SelectContent className="bg-blue-900 text-white rounded-xl">
-            {zodiacSigns.map(({ sign, dateRange }) => (
-              <SelectItem key={sign} value={sign} className="hover:bg-blue-800">
-                {sign} ({dateRange})
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <CardContent className="px-6 mt-2">
+        <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn">
+          <CardHeader className="pb-2">
+            <h2 className="text-2xl font-bold text-center">All Zodiac Signs</h2>
+          </CardHeader>
+          <CardContent>
+            <p className="text-lg text-justify">
+              The planet Jupiter is associated with wealth, good fortune and increase. It also represents the glue that holds society together through laws, religions, libraries and universities. Jupiter aspires to a higher expression of ourselves. Every 12 years, it stays in one sign for a year, bringing us different benefits and opportunities. Right now, Jupiter is in Gemini from May 2024 until June 2025. (The last time Jupiter was in Gemini was June 2012 to July 2013.) Before that it was from 2000 to 2001; from 1989 to 1990; and from 1977 to 1978. Small wonder it&#39;s the largest planet in our solar system. In fact, Jupiter is so big, you could fit ALL the other planets inside it -- and still have room for three sesame seeds and the heart of a Hollywood producer.
+            </p>
+          </CardContent>
+        </Card>
 
-        <Button
-          onClick={getHoroscope}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105"
-          disabled={!selectedSign || isLoading}
-        >
-          {isLoading ? (
-            <>
-              <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-              Consulting the Celestial Spheres...
-            </>
-          ) : (
-            'Reveal My Celestial Horoscope'.replace("'", "&#39;")
-          )}
-        </Button>
+        <Card className="bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950 border-blue-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn mt-6">
+          <CardHeader className="pb-2">
+            <h2 className="text-2xl font-bold text-center">Select Your Zodiac</h2>
+          </CardHeader>
+          <CardContent>
+            <Select onValueChange={(value) => setSelectedSign(value as ZodiacSign)}>
+              <SelectTrigger className="w-full bg-blue-900 border-blue-700 text-white rounded-xl mt-6 mb-4">
+                <SelectValue placeholder="Select Your Zodiac Sign" />
+              </SelectTrigger>
+              <SelectContent className="bg-blue-900 text-white rounded-xl">
+                {zodiacSigns.map(({ sign, dateRange }) => (
+                  <SelectItem key={sign} value={sign} className="hover:bg-blue-800">
+                    {sign} ({dateRange})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Button
+              onClick={getHoroscope}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-300 ease-in-out transform hover:scale-105"
+              disabled={!selectedSign || isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4 animate-spin" />
+                  Consulting the Celestial Spheres...
+                </>
+              ) : (
+                'Reveal My Celestial Horoscope'.replace("'", "&#39;")
+              )}
+            </Button>
+          </CardContent>
+        </Card>
 
         {revealedSign && (
           <div className="space-y-4 mt-4">
@@ -122,6 +140,7 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
                   alt={revealedSign}
                   className="w-16 h-16 object-contain"
                   width={64} // Added width property
+                  height={64}
                   onError={(e) => {
                     e.currentTarget.src = '/default.png';
                     console.error(`Failed to load image for ${revealedSign}`);
@@ -135,17 +154,6 @@ const WeeklyHoroscope: React.FC<WeeklyHoroscopeProps> = ({ onSignSelect }) => {
             </Card>
           </div>
         )}
-
-        <Card className="bg-gradient-to-br from-green-950 via-teal-950 to-blue-950 border-green-800 text-white rounded-2xl transition-all duration-500 ease-in-out animate-fadeIn mt-4">
-          <CardHeader className="pb-2">
-            <h2 className="text-2xl font-bold text-center">All Signs</h2>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg text-justify">
-              The planet Jupiter is associated with wealth, good fortune and increase. It also represents the glue that holds society together through laws, religions, libraries and universities. Jupiter aspires to a higher expression of ourselves. Every 12 years, it stays in one sign for a year, bringing us different benefits and opportunities. Right now, Jupiter is in Gemini from May 2024 until June 2025. (The last time Jupiter was in Gemini was June 2012 to July 2013.) Before that it was from 2000 to 2001; from 1989 to 1990; and from 1977 to 1978. Small wonder it&#39;s the largest planet in our solar system. In fact, Jupiter is so big, you could fit ALL the other planets inside it -- and still have room for three sesame seeds and the heart of a Hollywood producer.
-            </p>
-          </CardContent>
-        </Card>
       </CardContent>
 
       <CardFooter className="justify-center pb-4">

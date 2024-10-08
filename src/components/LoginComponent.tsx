@@ -108,7 +108,7 @@ const LoginComponent: React.FC = () => {
         </h1>
       </CardHeader>
       <div className="bg-transparent bg-opacity-50 rounded-xl px-4">
-        <h2 className="text-2xl font-cursive text-center text-white mb-4">
+        <h2 className="text-2xl font-cursive text-center text-white mb-8">
           Free Cosmic Services
         </h2>
 
