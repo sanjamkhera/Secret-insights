@@ -1,13 +1,19 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardContent } from "@/components/ui/card"
+import { useRouter } from 'next/navigation'; // next provides built in router 
+import { db, auth } from '../utils/firebase'; // import db and auth from firebase
+import { setDoc, doc, updateDoc, getDoc } from 'firebase/firestore'; // import setDoc, doc, and updateDoc from firebase/firestore
+import { signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'; // User is only allowed to sign in with google or email
+import { Card, CardHeader, CardContent } from "@/components/ui/card" // Need to create dialog here
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Mail, Star, Users, Briefcase, MessageCircle, Spade } from 'lucide-react';
 import ZodiacWheel from './ZodiacWheel';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
+import BirthInfoModal from './BirthInfoModal';
+import { FirebaseError } from "firebase/app"; // Import FirebaseError
 
 const features = [
   {
@@ -51,7 +57,14 @@ const LoginComponent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
   const [isSignUp, setIsSignUp] = useState(true);
+  const [showBirthInfoModal, setShowBirthInfoModal] = useState(false);
+  const [birthDate, setBirthDate] = useState('');
+  const [birthTime, setBirthTime] = useState('');
+  const [birthPlace, setBirthPlace] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isNewUser, setIsNewUser] = useState(false);
 
+  // This is for the revolving features on the login page
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % features.length);
@@ -60,44 +73,130 @@ const LoginComponent: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      if (email === '' && password === '') {
-        router.push('/dashboard');
-      } else {
-        setError('Invalid credentials. Please try again.');
-      }
-    }, 1500);
+  // Once the user has signed in it will navigate to the dashboard 
+  const handleNavigation = () => {
+    setTimeout(() => router.push('/dashboard'), 2000); // 2 second delay
   };
 
+  // Toggle between signUp and signIn based, if the user has an account or not
   const toggleAuthMode = () => {
     setIsSignUp(!isSignUp);
     setError(null);
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setIsLoading(true);
     setError(null);
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-    setTimeout(() => {
+      // Check if the user already exists in Firestore
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+
+      if (!userDoc.exists()) {
+        // New user
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          name: user.displayName
+        });
+        setIsNewUser(true);
+        setShowBirthInfoModal(true);
+      } else {
+        // Existing user
+        toast.success('Successfully signed in!');
+        handleNavigation();
+      }
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      setError('Google sign-in failed. Please try again.');
+      toast.error('Google sign-in failed. Please try again.');
+    } finally {
       setIsLoading(false);
-      alert('Google sign-in successful! (This is a placeholder)');
-    }, 1500);
+    }
   };
 
-  const handleAppleSignIn = () => {
+  const handleEmailSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     setError(null);
-
-    setTimeout(() => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      // Store basic user info in Firebase
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        name: name
+      });
+      toast.success('Successfully signed up!');
+      setShowBirthInfoModal(true);  // Show birth info modal instead of navigating
+    } catch (error) {
+      if (error instanceof FirebaseError && error.code === 'auth/email-already-in-use') {
+        setError('This email is already in use. Please try signing in instead.');
+        toast.error('This email is already in use. Please try signing in instead.');
+      } else {
+        console.error('Email sign-up error:', error);
+        setError('Email sign-up failed. Please try again.');
+        toast.error('Email sign-up failed. Please try again.');
+      }
+    } finally {
       setIsLoading(false);
-      alert('Apple sign-in successful! (This is a placeholder)');
-    }, 1500);
+    }
+  };
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success('Successfully signed in!');
+      handleNavigation();
+    } catch (error) {
+      console.error('Sign-in error:', error);
+      setError('Invalid credentials. Please try again.');
+      toast.error('Invalid credentials. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleBirthInfoSubmit = async () => {
+    setIsLoading(true);
+    try {
+      if (!auth.currentUser) {
+        throw new Error("No user is currently signed in");
+      }
+
+      await updateUserData(auth.currentUser.uid, {
+        birthInfo: {
+          date: birthDate,
+          time: birthTime,
+          place: birthPlace
+        }
+      });
+
+      toast.success('Birth information saved successfully!');
+      handleNavigation();
+    } catch (error) {
+      console.error('Error saving birth information:', error);
+      toast.error('Failed to save birth information. Please try again.');
+    } finally {
+      setIsLoading(false);
+      setShowBirthInfoModal(false);
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateUserData = async (userId: string, data: any) => {
+    try {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, data);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+      throw error;
+    }
   };
 
   return (
@@ -107,6 +206,7 @@ const LoginComponent: React.FC = () => {
           {isSignUp ? 'Join the world of stars' : 'Return to your constellation'}
         </h1>
       </CardHeader>
+
       <div className="bg-transparent bg-opacity-50 rounded-xl px-4">
         <h2 className="text-2xl font-cursive text-center text-white mb-8">
           Free Cosmic Services
@@ -132,28 +232,22 @@ const LoginComponent: React.FC = () => {
           ))}
         </div>
       </div>
+
       <div className="flex justify-center">
         <ZodiacWheel />
       </div>
+
       <div className="w-full max-w-md mx-auto">
         <Card className="mb-6 bg-transparent border-none">
           <CardContent className="p-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Button
-                type="button"
-                onClick={handleAppleSignIn}
-                className="w-full bg-black hover:bg-gray-800 text-white font-bold rounded-xl transition-all duration-300 ease-in-out text-sm flex items-center justify-center"
-              >
-                <Image src="/apple.png" alt="Apple" className="mr-2 w-5 h-5" width={20} height={20} />
-                Sign up with Apple
-              </Button>
+            <form onSubmit={isSignUp ? handleEmailSignUp : handleEmailSignIn} className="space-y-4">
               <Button
                 type="button"
                 onClick={handleGoogleSignIn}
                 className="w-full bg-white hover:bg-gray-100 text-gray-800 font-bold rounded-xl transition-all duration-300 ease-in-out text-sm flex items-center justify-center"
               >
                 <Image src="/google.png" alt="Google" className="mr-2 w-5 h-5" width={20} height={20} />
-                Sign up with Google
+                {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
               </Button>
 
               <div className="relative flex py-3 items-center">
@@ -204,13 +298,25 @@ const LoginComponent: React.FC = () => {
             <p className="text-center text-white text-sm mt-4">
               {isSignUp ? 'Already a member?' : 'Not in the constellation yet?'}
               {' '}
-              <a href="#" onClick={toggleAuthMode} className="text-purple-400 hover:underline">
+              <a href="#" onClick={(e) => { e.preventDefault(); toggleAuthMode(); }} className="text-purple-400 hover:underline">
                 {isSignUp ? 'Sign in' : 'Join now for FREE!'}
               </a>
             </p>
           </CardContent>
+
         </Card>
       </div>
+      <BirthInfoModal
+        isOpen={showBirthInfoModal}
+        onClose={() => setShowBirthInfoModal(false)}
+        onSubmit={handleBirthInfoSubmit}
+        birthDate={birthDate}
+        setBirthDate={setBirthDate}
+        birthTime={birthTime}
+        setBirthTime={setBirthTime}
+        birthPlace={birthPlace}
+        setBirthPlace={setBirthPlace}
+      />
     </Card>
   );
 };
