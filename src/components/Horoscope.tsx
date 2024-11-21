@@ -8,7 +8,7 @@ import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { ZodiacSign } from '@/types';
 import { CelestialData } from '@/types/celestialData';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ZodiacWheel from './ZodiacWheel';
 import { CelestialTable } from './CelestialTable';
 
