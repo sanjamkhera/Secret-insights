@@ -1,77 +1,75 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eclipse } from 'lucide-react';
+import { Eclipse, Sun } from 'lucide-react';
 
-// Define the list of Zodiac signs in order
 const zodiacSigns = [
   'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
 ];
 
-// Unicode symbols for each zodiac sign
-const zodiacSymbols: { [key: string]: string } = {
-  'Aries': '♈', 'Taurus': '♉', 'Gemini': '♊', 'Cancer': '♋',
-  'Leo': '♌', 'Virgo': '♍', 'Libra': '♎', 'Scorpio': '♏',
-  'Sagittarius': '♐', 'Capricorn': '♑', 'Aquarius': '♒', 'Pisces': '♓'
+const symbolPaths: { [key: string]: string } = {
+  // Ram horns curling from a center point
+  'Aries': 'M -8,4 C -8,-4 0,-4 0,4 C 0,-4 8,-4 8,4',
+  // Bull's head with horns 
+  'Taurus': 'M -10,2 A 10 8 0 0 1 10,2 M -8,6 L 8,6',
+  // The parallel lines of Gemini
+  'Gemini': 'M -6,-8 L -6,8 M 6,-8 L 6,8',
+  // Swirling symbol for Cancer
+  'Cancer': 'M -8,-3 C -3,2 3,-8 8,-3',
+  // Lion's mane and tail
+  'Leo': 'M -8,0 Q 0,-8 8,0 Q 4,8 -8,8',
+  // The maiden's symbol
+  'Virgo': 'M -8,0 Q -4,-8 0,0 T 8,0 L 10,8',
+  // The balanced scales
+  'Libra': 'M -10,0 L 10,0 M -8,4 L 8,4',
+  // Scorpion's stinger
+  'Scorpio': 'M -8,0 Q -4,-6 0,0 T 8,0 L 12,-6',
+  // Arrow for Sagittarius
+  'Sagittarius': 'M -6,-6 L 6,6 M -6,6 L 6,-6 M 0,-8 L 0,8',
+  // Sea-goat symbol
+  'Capricorn': 'M -8,4 C -4,-4 4,-4 8,4 C 4,0 0,-4 -4,-8',
+  // Water bearer waves
+  'Aquarius': 'M -12,0 C -8,-4 -4,4 0,0 C 4,-4 8,4 12,0',
+  // The two fish tied together
+  'Pisces': 'M -10,-4 C -6,0 -2,-4 0,0 M 0,0 C 2,4 6,0 10,4 M 0,-6 L 0,6'
 };
-
-// Simplified constellation patterns (adjusted to be centered)
-// Each constellation is represented by an array of [x, y] coordinate pairs
-const constellations: { [key: string]: [number, number][] } = {
-  'Aries': [[-15, -15], [-5, -5], [5, -10], [15, 0]],
-  'Taurus': [[-15, -5], [-5, 5], [5, 0], [0, -10], [10, -15]],
-  'Gemini': [[-15, -15], [-10, -5], [-5, 5], [0, 15], [5, 5], [10, -5], [15, -15]],
-  'Cancer': [[-15, -7], [-5, -2], [5, -7], [0, 3], [10, 8]],
-  'Leo': [[-15, -12], [-5, -7], [5, -12], [0, -2], [10, 3], [5, 13], [-5, 8], [-15, 13]],
-  'Virgo': [[-15, -10], [-10, 0], [-5, 10], [0, 0], [5, -10], [10, 0], [15, 10]],
-  'Libra': [[-15, -5], [-5, 5], [5, -5], [15, 5]],
-  'Scorpio': [[-15, -7], [-5, -2], [5, -7], [15, -2], [10, 8], [20, 13]],
-  'Sagittarius': [[-15, -15], [-5, -5], [5, -10], [15, 0], [10, 10], [0, 5], [-10, 15]],
-  'Capricorn': [[-15, -7], [-5, 3], [5, -2], [15, 8], [20, -2], [10, -12]],
-  'Aquarius': [[-15, -7], [-5, -2], [5, -7], [15, -2], [10, 8], [0, 13], [-10, 8]],
-  'Pisces': [[-15, -7], [-5, -2], [5, -7], [15, -2], [5, 8], [-5, 13], [-15, 8]]
-};
-
 
 const ZodiacWheel: React.FC = () => {
-  // Define the dimensions and radii for the wheel
-  const size = 320; // Overall size of the wheel
-  const padding = 30; // Padding around the wheel
-  const adjustedSize = size + padding * 2; // Total size including padding
-  const center = adjustedSize / 2; // Center point of the wheel
-  const outerRadius = size / 2; // Radius of the outer circle
-  const innerRadius = outerRadius - 25; // Radius of the inner circle
-  const symbolRadius = outerRadius - 90; // Radius for placing zodiac symbols
-  const constellationRadius = outerRadius - 50;; // Radius for placing constellations
-  const textRadius = outerRadius - 13; // Radius for placing zodiac sign names
-  const innerCircleRadius = 34; // New variable: Radius of the innermost circle
+  const size = 320;
+  const padding = 0;
+  const adjustedSize = size + padding * 2;
+  const center = adjustedSize / 2;
+  const outerRadius = size / 2;
+  const innerRadius = outerRadius - 25;
+  const symbolRadius = outerRadius - 60;
+  const textRadius = outerRadius - 13;
+  const innerCircleRadius = 34;
 
-  // Helper function to calculate coordinates on the circle
   const getCoordinates = (angle: number, r: number) => ({
-    x: center + r * Math.cos(angle),
-    y: center + r * Math.sin(angle),
+    x: Math.round((center + r * Math.cos(angle)) * 1000) / 1000,
+    y: Math.round((center + r * Math.sin(angle)) * 1000) / 1000,
   });
 
   return (
     <div className="relative">
-      {/* Main SVG container with rotation animation */}
       <motion.svg
         width={adjustedSize}
         height={adjustedSize}
         viewBox={`0 0 ${adjustedSize} ${adjustedSize}`}
-        animate={{ rotate: 360 }} // Rotate 360 degrees
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }} // Take 60 seconds to complete one rotation, repeat infinitely
-        className={'m-3'}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        className="mt-8"
       >
-
-        {/* Draw the outer and inner circles of the wheel */}
+        {/* Background */}
+        <circle cx={center} cy={center} r={outerRadius} fill="none" />
+        
+        {/* Circles */}
         <circle cx={center} cy={center} r={outerRadius} fill="none" stroke="white" strokeWidth="2" />
         <circle cx={center} cy={center} r={innerRadius} fill="none" stroke="white" strokeWidth="1" />
-
-        {/* Draw the dividing lines for each zodiac sign */}
+        
+        {/* Dividing lines */}
         {zodiacSigns.map((_, i) => {
-          const angle = (i * 30 - 90) * (Math.PI / 180); // Convert degrees to radians, subtract 90 to start at top
+          const angle = (i * 30 - 90) * (Math.PI / 180);
           const innerPoint = getCoordinates(angle, innerCircleRadius);
           const outerPoint = getCoordinates(angle, outerRadius);
           return (
@@ -81,51 +79,37 @@ const ZodiacWheel: React.FC = () => {
               y1={innerPoint.y}
               x2={outerPoint.x}
               y2={outerPoint.y}
-              stroke="white"
-              strokeWidth="1"
+              stroke="silver"
+              strokeWidth="0.5"
             />
           );
         })}
 
-        {/* Draw the constellations for each zodiac sign */}
+        {/* Zodiac symbols */}
         {zodiacSigns.map((sign, i) => {
           const angle = (i * 30 - 75) * (Math.PI / 180);
-          const basePoint = getCoordinates(angle, constellationRadius);
-          const pattern = constellations[sign];
-
+          const point = getCoordinates(angle, symbolRadius);
+          const rotationAngle = (i * 30 + 15);
           return (
-            <g key={`constellation-${sign}`}>
-              {/* Draw stars */}
-              {pattern.map((point, j) => (
-                <circle
-                  key={`star-${j}`}
-                  cx={basePoint.x + point[0]}
-                  cy={basePoint.y + point[1]}
-                  r="1"
-                  fill="#8a2be2"
-                />
-              ))}
-              {/* Connect stars with lines */}
-              {pattern.slice(1).map((point, j) => (
-                <line
-                  key={`line-${j}`}
-                  x1={basePoint.x + pattern[j][0]}
-                  y1={basePoint.y + pattern[j][1]}
-                  x2={basePoint.x + point[0]}
-                  y2={basePoint.y + point[1]}
-                  stroke="#8a2be2"
-                  strokeWidth="1"
-                />
-              ))}
+            <g
+              key={`symbol-${sign}`}
+              transform={`translate(${point.x}, ${point.y}) rotate(${rotationAngle}) scale(1.5)`}
+            >
+              <path
+                d={symbolPaths[sign]}
+                stroke="silver"
+                strokeWidth="1"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </g>
           );
         })}
 
-        {/* Draw inner circles (like a clock face) */}
-
         <circle cx={center} cy={center} r={innerCircleRadius} fill="none" stroke="white" strokeWidth="1" />
 
-        {/* Add zodiac sign names in a circular pattern */}
+        {/* Sign names */}
         {zodiacSigns.map((sign, i) => {
           const angle = (i * 30 - 90 + 15) * (Math.PI / 180);
           const point = getCoordinates(angle, textRadius);
@@ -134,11 +118,11 @@ const ZodiacWheel: React.FC = () => {
               key={`name-${sign}`}
               x={point.x}
               y={point.y}
-              fill="white"
-              fontSize="11"
+              fill="silver"
+              fontSize="10"
               textAnchor="middle"
               dominantBaseline="middle"
-              transform={`rotate(${(i * 30 + 15)}, ${point.x}, ${point.y})`} // Rotate text to align with wheel
+              transform={`rotate(${(i * 30 + 15)}, ${point.x}, ${point.y})`}
             >
               {sign}
             </text>
@@ -146,39 +130,8 @@ const ZodiacWheel: React.FC = () => {
         })}
       </motion.svg>
 
-      {/* Rotating container for zodiac symbols */}
-      <motion.div
-        className="absolute top-[1px] left-0 w-full h-full"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-      >
-        {zodiacSigns.map((sign, i) => {
-          const angle = (i * 30 - 75) * (Math.PI / 180); // Subtract 75 to center within each segment
-          const point = getCoordinates(angle, symbolRadius);
-          return (
-            <motion.div
-              key={`symbol-${sign}`}
-              className="absolute text-fuchsia-500 text-sm"
-              style={{
-                left: `${point.x}px`,
-                top: `${point.y}px`,
-                transform: 'translate(-50%, -50%)',
-                textShadow: '0 0 5px #ff00ff',
-              }}
-              animate={{ rotate: -360 }} // Counter-rotate to keep symbols upright
-              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-            >
-              {zodiacSymbols[sign]}
-            </motion.div>
-          );
-        })}
-      </motion.div>
-
-      <div
-        className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none"
-        style={{ transform: `translate(${padding - 30}px, ${padding - 30}px)` }}
-      >
-        <Eclipse size={36} color="white" />
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
+        <Sun size={36} color="silver" className="mr-[11px]" />
       </div>
     </div>
   );

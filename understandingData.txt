@@ -1,34 +1,26 @@
-# Algorithm for Generating Natal Charts
+Things to do:
+// src/lib/horoscopeGenerator.ts
+- Create a system to generate horoscope text based on celestial positions
+- Define relationships between:
+  - Zodiac signs and their ruling planets
+  - Constellations and their meanings
+  - Aspects (angles) between planets and their interpretations
 
-1. **Input Data**
-   - Birth date and time
-   - Birth location (latitude and longitude)
-   - Celestial data for the birth date/time (similar to the provided JSON)
+// src/lib/horoscopeGenerator.ts
+- Create a system to generate horoscope text based on celestial positions
+- Define relationships between:
+  - Zodiac signs and their ruling planets
+  - Constellations and their meanings
+  - Aspects (angles) between planets and their interpretations
 
-2. **Calculate Planetary Positions**
-   - For each planet (Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto):
-     - Extract Right Ascension (RA) and Declination from celestial data
-     - Convert RA and Declination to ecliptic longitude (zodiac position)
-     - Determine zodiac sign and degree based on ecliptic longitude
+- Add a server-side scheduled task or API route that:
+  - Runs once per day (early morning)
+  - Fetches tomorrow's celestial data
+  - Stores it in a persistent storage (localStorage or database)
 
-3. **Determine Ascendant and Houses**
-   - Calculate Local Sidereal Time (LST) for birth time and location
-   - Use LST and birth location to calculate Ascendant
-   - Calculate cusps for all 12 houses
-
-4. **Identify Aspects**
-   - Compare angular distances between planets
-   - Identify major aspects (conjunction, opposition, trine, square, sextile)
-
-5. **Generate Chart**
-   - Plot zodiac wheel
-   - Place planets in their respective signs and houses
-   - Draw aspect lines
-
-6. **Interpret Results**
-   - Identify Sun sign, Moon sign, Ascendant sign
-   - Note any significant placements (e.g., stelliums, planets in domicile/exaltation)
-   - List major aspects and their interpretations\
+- Remove hardcoded horoscopes
+- Add hooks to fetch stored celestial data
+- Generate horoscope text based on actual planetary positions
 
 
    

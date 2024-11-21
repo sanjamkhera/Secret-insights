@@ -24,13 +24,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full">
-      <body className={`${inter.className} max-w-[100vw] overflow-x-hidden mx-auto`}>
+      
+      <body className={`${inter.className}`}>
         {/* Render the dynamically imported StarryGalaxyBackground */}
         <StarryGalaxyBackground />
         {/* Main content wrapper with z-index to appear above the background */}
-        <div className="relative z-10 min-h-screen pt-0 bg-black bg-opacity-40 pb-6 mx-auto">
+        <div className="relative z-10 min-h-screen pb-6">
           {/* Main content area where child components will be rendered */}
-          <main className="overflow-x-hidden">
+          <main className="">
             {children}
           </main>
         </div>

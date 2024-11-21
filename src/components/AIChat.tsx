@@ -13,10 +13,10 @@ interface Message {
 }
 
 const examplePrompts = [
-  "Explain the concept of retrograde motion in astrology",
-  "How does the position of Jupiter affect one's fortune?",
-  "What's the significance of the 12 houses in a natal chart?",
-  "Can you describe the personality traits of a Scorpio sun, Leo moon?"
+  "Explain retrograde motion in astrology",
+  "How does Jupiter affect one's fortune?",
+  "Significance of the 12 houses in a natal chart?",
+  "Describe the personality traits of a Scorpio?"
 ];
 
 const AIChat: React.FC = () => {
@@ -46,16 +46,16 @@ const AIChat: React.FC = () => {
   }, [messages]);
 
   return (
-    <Card className="bg-black bg-opacity-60 text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mt-6 pb-6">
+    <Card className="text-white shadow-lg font-sans border-black-400 border-2 max-w-sm mx-auto rounded-3xl overflow-hidden transition-all duration-300 ease-in-out transform mt-8">
       <CardHeader className="pb-2">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-3 font-cursive leading-relaxed text-purple-200">Cosmic AI Chat</h1>
+          <h1 className="text-3xl font-bold mb-3 font-cursive leading-relaxed text-white">Cosmic AI Chat</h1>
         </div>
       </CardHeader>
 
       <CardContent className="px-6 relative">
         {messages.length === 0 && (
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 gap-4 mb-6">
             {examplePrompts.map((prompt, index) => (
               <Button
                 key={index}
@@ -109,7 +109,7 @@ const AIChat: React.FC = () => {
       </CardContent>
 
       <CardFooter className="justify-center pb-4">
-        <p className="text-sm font-cursive leading-relaxed text-purple-200 text-center">
+        <p className="text-sm font-cursive leading-relaxed text-white text-center">
           Explore the wisdom of the universe through AI
         </p>
       </CardFooter>
