@@ -11,3 +11,11 @@ export type ZodiacSign =
   | 'Capricorn'
   | 'Aquarius'
   | 'Pisces';
+
+type HoroscopeData = {
+  [K in Lowercase<ZodiacSign>]: string;
+};
+
+export interface DailyHoroscope extends HoroscopeData {
+  date: string;
+}

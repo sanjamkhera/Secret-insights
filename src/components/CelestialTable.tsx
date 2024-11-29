@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { CelestialData } from "@/types/celestialData";
+import { Card, CardContent } from "./ui/card";
+import { CelestialData } from "../types/celestialData";
 import { Sparkles } from 'lucide-react';
 
 // Define zodiac constellations and their nearby non-zodiac constellations
@@ -20,7 +20,7 @@ const CONSTELLATION_TO_ZODIAC: Record<string, string> = {
   'Cap': 'Capricorn',
   'Aqr': 'Aquarius',
   'Psc': 'Pisces',
-  
+
   // Non-zodiac to nearest zodiac mappings
   'Oph': 'Sagittarius',
   'Cet': 'Pisces',
@@ -51,7 +51,7 @@ export const CelestialTable = ({ data }: { data: CelestialData }) => {
           <Sparkles className="w-5 h-5 mr-2 text-blue-400" />
           <h3 className="text-xl font-thin text-white">Current Planetary Alignments</h3>
         </div>
-        
+
         <div className="overflow-hidden rounded-xl">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -67,7 +67,7 @@ export const CelestialTable = ({ data }: { data: CelestialData }) => {
               </thead>
               <tbody className="divide-y divide-blue-800/30">
                 {celestialBodies.map(({ planet, zodiac }, index) => (
-                  <tr 
+                  <tr
                     key={planet}
                     className={`
                       ${index % 2 === 0 ? 'bg-blue-900/20' : 'bg-blue-900/10'}
@@ -88,7 +88,7 @@ export const CelestialTable = ({ data }: { data: CelestialData }) => {
             </table>
           </div>
         </div>
-        
+
         <div className="mt-4 text-center">
           <p className="text-xs text-blue-300/70 italic">
             Observed from Vancouver, Canada

@@ -1,8 +1,8 @@
 "use client"
 
 import React from 'react';
-import WeeklyHoroscope from '@/components/Horoscope';
-import { ZodiacSign } from '@/types';
+import WeeklyHoroscope from '../components/Horoscope';
+import { ZodiacSign } from '../types';
 import { Sun, Moon, Star, Sparkles, Eclipse, SunMoon, Zap } from 'lucide-react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

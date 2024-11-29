@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/src/app/api/test/
+/src/app/api/test-retrieve/
 
 # next.js
 /.next/
@@ -22,6 +24,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+firebase-debug.log
+ui-debug.log
+.firebase/
 
 # debug
 npm-debug.log*
@@ -30,6 +35,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -37,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# firebase admin
+firebase-service-account.json

@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { Send, Bot, User, Sparkle } from 'lucide-react';
 import { motion } from 'framer-motion';
 

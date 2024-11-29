@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 // Dynamically import the StarryGalaxyBackground component with SSR disabled
 // This is useful for components that rely on browser APIs or have large bundle sizes
-const StarryGalaxyBackground = dynamic(() => import('@/components/StarryGalaxyBackground'), { ssr: false })
+const StarryGalaxyBackground = dynamic(() => import('../components/StarryGalaxyBackground'), { ssr: false })
 
 // Metadata for the application, used by Next.js for SEO
 export const metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="w-full">
-      
+
       <body className={`${inter.className}`}>
         {/* Render the dynamically imported StarryGalaxyBackground */}
         <StarryGalaxyBackground />
