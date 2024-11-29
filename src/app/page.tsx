@@ -3,7 +3,7 @@
 import React from 'react';
 import WeeklyHoroscope from '../components/Horoscope';
 import { ZodiacSign } from '../types';
-import { Sun, Moon, Star, Sparkles, Eclipse, SunMoon, Zap } from 'lucide-react';
+import { Sun, Moon, Star, Sparkles, SunMoon, Zap } from 'lucide-react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,7 +23,6 @@ export default function Home() {
             <Sun className="text-yellow-300 animate-spin-slow" size={24} />
             <Moon className="text-blue-300 animate-pulse" size={24} />
             <Star className="text-cyan-300 animate-twinkle" size={24} />
-            <Eclipse className="text-orange-300 animate-pulse" size={24} />
             <Zap className="text-green-300 animate-pulse" size={24} />
             <SunMoon className="text-purple-300 animate-pulse" size={24} />
             <Sparkles className="text-pink-300 animate-pulse" size={24} />
